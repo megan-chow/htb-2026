@@ -87,8 +87,8 @@ async function generateInsights(owner, repo) {
 
   return {
     contributors: contributors,
-    contributorStats,
-    repoDetails,
+    contributorStats: contributorStats,
+    repoDetails: repoDetails,
     commitFrequency: commits,
     commitDetails: commitDetails,
     pullRequestStats: pulls,
