@@ -1,8 +1,8 @@
-import './style.css'
+import "./style.css";
 import { Octokit } from "https://esm.sh/octokit";
 
 const octokit = new Octokit({
-  auth: import.meta.env.VITE_GITHUB_TOKEN // or use environment variables in Node
+  auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
 });
 
 document.getElementById("generateBtn").addEventListener("click", async () => {
@@ -31,12 +31,13 @@ function parseRepoUrl(url) {
 }
 
 async function generateInsights(owner, repo) {
-  const [contributors, commits, commitDetails, pulls, issues] = await Promise.all([
+  const [contributors, commits, commitDetails, pulls, issues, authors] = await Promise.all([
     getContributors(owner, repo),
     getCommitActivity(owner, repo),
     getContributorChanges(owner, repo),
     getPullRequests(owner, repo),
-    getIssues(owner, repo)
+    getIssues(owner, repo),
+    getAuthors(owner, repo),
   ]);
 
   return {
@@ -44,7 +45,8 @@ async function generateInsights(owner, repo) {
     commitFrequency: commits,
     commitDetails: commitDetails,
     pullRequestStats: pulls,
-    issueStats: issues
+    issueStats: issues,
+    authors: authors,
   };
 }
 
@@ -65,7 +67,7 @@ async function getContributors(owner, repo) {
 async function getCommitActivity(owner, repo) {
   const res = await octokit.request(
     "GET /repos/{owner}/{repo}/stats/commit_activity",
-    { owner, repo }
+    { owner, repo },
   );
   return res.data;
 }
@@ -121,32 +123,56 @@ async function getContributorChanges(owner, repo) {
 
 
 async function getPullRequests(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/pulls",
-    { owner, repo, state: "closed", per_page: 50 }
-  );
+  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
+    owner,
+    repo,
+    state: "closed",
+    per_page: 50,
+  });
 
-  return res.data.map(pr => ({
+  return res.data.map((pr) => ({
     number: pr.number,
     created: pr.created_at,
     merged: pr.merged_at,
     timeToMergeHours: pr.merged_at
       ? (new Date(pr.merged_at) - new Date(pr.created_at)) / 36e5
-      : null
+      : null,
   }));
 }
 
 async function getIssues(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/issues",
-    { owner, repo, state: "closed", per_page: 50 }
-  );
+  const res = await octokit.request("GET /repos/{owner}/{repo}/issues", {
+    owner,
+    repo,
+    state: "closed",
+    per_page: 50,
+  });
 
-  return res.data.map(issue => ({
+  return res.data.map((issue) => ({
     number: issue.number,
     created: issue.created_at,
     closed: issue.closed_at,
     resolutionHours:
-      (new Date(issue.closed_at) - new Date(issue.created_at)) / 36e5
+      (new Date(issue.closed_at) - new Date(issue.created_at)) / 36e5,
   }));
+}
+
+async function getAuthors(owner, repo) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
+    owner,
+    repo,
+  });
+
+  let author = [];
+  res.data.forEach((commit) => {
+    author.push(commit.commit.author.name);
+  });
+
+  const uniqueAuthors = [...new Set(author)];
+
+  // console.log(res.data);
+  // console.log(author);
+  // console.log(uniqueAuthors);
+
+  return uniqueAuthors;
 }
