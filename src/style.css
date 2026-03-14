@@ -163,6 +163,7 @@ body {
     rgba(21, 21, 21, 1) 0%,
     rgba(21, 21, 32, 1) 100%
   );
+  overflow-y: scroll;
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
@@ -176,6 +177,7 @@ body {
   border-radius: var(--borderR);
   background-color: var(--bg);
   padding: 25px;
+  overflow-y: scroll;
 }
 
 #output {
@@ -245,6 +247,10 @@ body {
   margin-left:2px;
   align-content: center;
   margin-top: 1px;
+}
+
+.d2h-diff-table {
+  position: relative;
 }
 
 #loading-overlay {

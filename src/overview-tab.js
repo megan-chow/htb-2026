@@ -1,7 +1,9 @@
 import "./analytics.js";
 
 // Store GitHub Repo Insights
-const insights = localStorage.getItem("insights");
+const insights = JSON.parse(localStorage.getItem("insights"));
+// const insights = localStorage.getItem("insights");
+const commitDetails = insights.commitDetails;
 
 async function loadOverviewTab() {
   const container = document.getElementById("stats");
@@ -10,8 +12,15 @@ async function loadOverviewTab() {
   const res = await fetch("/components/overview-tab.html");
   container.innerHTML = await res.text();
 
+  const commit_frequency = document.getElementById("commit-frequency");
+  commit_frequency.innerHTML = "Total Commits: " + (await getTotalCommits());
+
+  const open_pr = document.getElementById("open-pr");
+  open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
+
   console.log(localStorage.username);
-  console.log(getTotalCommits());
+  console.log("Commits: " + (await getTotalCommits()));
+  console.log("Open PRs: " + (await getOpenPRs()));
 }
 window.loadOverviewTab = loadOverviewTab;
 
@@ -20,23 +29,38 @@ async function getUserName() {
 }
 
 async function getTotalCommits() {
-  // localStorage.insights.commitDetails.length();
-  // localStorage.insights.commitDetails.foreach();
-  // {
-  //   if (localStorage.insights.commitDetails.isArray(username)) {
-  //     return localStorage.insights.commitDetails.username.length;
-  //   }
-  // }
+  let name = localStorage.username;
+  // const insights = JSON.parse(localStorage.getItem("insights"));
+  const commitDetails = insights.commitDetails;
+
+  if (commitDetails[name] && Array.isArray(commitDetails[name])) {
+    return commitDetails[name].length;
+  }
 }
 
-async function getCommitsInRange() {}
+async function getLastCommit() {
+  return commitDetails[0];
+}
 
-async function getLastCommit() {}
+async function getOpenPRs() {
+  let count = 0;
+  const prs = insights.pullRequestStats;
 
-async function getOpenPRs() {}
+  for (let i = 0; i < insights.pullRequestStats.length; i++) {
+    if (
+      insights.pullRequestStats[i].state.open &&
+      insights.pullRequestStats[i].author.username === localData.username
+    ) {
+      count++;
+    }
+  }
+  return count;
+}
 
 async function getOpenIssues() {}
 
 async function getClosedIssues() {}
 
 async function getGraph(graph_name) {}
+
+async function getCommitsInRange() {}

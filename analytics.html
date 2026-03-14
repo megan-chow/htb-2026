@@ -1,19 +1,17 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./src/style.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>GitHub Insights</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="./src/style.css" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>GitHub Insights</title>
-</head>
-
-<body class="page">
-
-  <div id="loading-overlay">
-    <div id="wrap"></div>
-    <h1 class="info">Loading...</h1>
-  </div>
+  <body class="page">
+    <div id="loading-overlay">
+      <div id="wrap"></div>
+      <h1 class="info">Loading...</h1>
+    </div>
 
   <header class="header">
     <div id="logo">LOGOPLACEHOLDER</div>
@@ -51,24 +49,33 @@
 
         </div>
 
-        <div id="test"></div>
+          <div id="test"></div>
+        </div>
       </div>
-    </div>
-    <!-- <div id="tempButtons">
+      <div id="tempButtons">
         <input
           id="overviewButton"
           type="button"
           value="Overview"
           onclick="loadOverviewTab()"
         />
-      </div> -->
-  </main>
+      </div>
+    </main>
+
+    <!-- <pre id="output" style="display: none"></pre> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
+    <script type="module" src="/src/analytics.js"></script>
+    <script type="module" src="/src/acquisitions.js"></script>
+    <script type="module" src="/src/overview-tab.js"></script>
+  </body>
+      </div> 
+    </main>
 
   <!-- <pre id="output" style="display: none"></pre> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
   <script type="module" src="/src/analytics.js"></script>
+  <script type="module" src="/src/commit_details.js"></script>
   <script type="module" src="/src/acquisitions.js"></script>
   <script type="module" src="/src/overview-tab.js"></script>
 </body>
-
 </html>
