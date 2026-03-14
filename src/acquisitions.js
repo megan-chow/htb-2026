@@ -2,7 +2,7 @@ import { Octokit } from "https://esm.sh/octokit?bundle";
 
 import Chart from 'chart.js/auto';
 
-import {getContributorStats, getRepoDetails} from "./analytics.js";
+// import {getContributorStats, getRepoDetails} from "./analytics.js";
 
 const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
@@ -13,6 +13,8 @@ const date = new Date(unix * 1000);
 
 const owner = localStorage.getItem("owner");
 const repo = localStorage.getItem("repo");
+
+// const insights = JSON.parse(localStorage.getItem("insights"));
 
 let contributorChart = null;
 
@@ -78,6 +80,34 @@ function buildDatasets(contributors, labels) {
       tension: 0.3,
     };
   });
+}
+
+ async function getContributorStats(owner, repo) {
+  for (let i = 0; i < 5; i++) {
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/stats/contributors",
+      { owner, repo }
+    );
+
+    if (res.status === 202) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      continue;
+    }
+
+    return res.data;
+  }
+
+  throw new Error("GitHub stats are still being generated. Try again.");
+}
+
+
+async function getRepoDetails(owner, repo) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner,
+    repo,
+  });
+
+  return res.data;
 }
 
 
