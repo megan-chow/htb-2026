@@ -134,10 +134,13 @@ async function getContributorStats(owner, repo) {
 async function getRepoDetails(owner, repo) {
   const res = await octokit.request(
     "GET /repos/{owner}/{repo}",
-    { owner, repo }
+    { owner, repo, }
   );
+  
+  return ({
 
-  return res.data;
+    created_at: res.data.created_at,
+  });
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {
