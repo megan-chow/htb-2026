@@ -1,51 +1,50 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./src/style.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>GitHub Insights</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="./src/style.css" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>GitHub Insights</title>
-</head>
-
-<body class="page">
-
-  <div id="loading-overlay">
-    <div id="wrap"></div>
-    <h1 class="info">Loading...</h1>
-  </div>
-
-  <header class="header">
-    <div id="logo">LOGOPLACEHOLDER</div>
-    <div id="searchbar">
-      <img src="./gitico.png" />
-      <div id="search">
-        <input id="repoInput" placeholder="Enter GitHub repository URL"
-          value="https://github.com/taeu0913/1800_202610_BBY21/" />
-        <button id="generateBtn">%</button>
-        <pre id="output" style="display: none"></pre>
-      </div>
+  <body class="page">
+    <div id="loading-overlay">
+      <div id="wrap"></div>
+      <h1 class="info">Loading...</h1>
     </div>
-  </header>
 
-  <main id="main">
-    <div id="userBoard">
-      <div class="userTabslist">
-        Loading...
-      </div>
-    </div>
-    <div id="statsPage">
-      <div id="contributorResultsHeading">Select a contributor</div>
-      <div id="stats">
-        ACTUAL STATS
-        <div style="width: 500px">
-          <canvas id="acquisitions"></canvas>
+    <header class="header">
+      <div id="logo">LOGOPLACEHOLDER</div>
+      <div id="searchbar">
+        <img src="./gitico.png" />
+        <div id="search">
+          <input
+            id="repoInput"
+            placeholder="Enter GitHub repository URL"
+            value="https://github.com/megan-chow/htb-2026/"
+          />
+          <button id="generateBtn">%</button>
+          <pre id="output" style="display: none"></pre>
         </div>
-
-        <div id="test"></div>
       </div>
-    </div>
-    <!-- <div id="tempButtons">
+    </header>
+
+    <main id="main">
+      <div id="userBoard">
+        <div class="userTabslist">Loading...</div>
+      </div>
+      <div id="statsPage">
+        <div id="contributorResultsHeading">Select a contributor</div>
+        <div id="stats">
+          ACTUAL STATS
+          <div style="width: 500px">
+            <canvas id="acquisitions"></canvas>
+          </div>
+
+          <div id="test"></div>
+        </div>
+      </div>
+      <div id="tempButtons">
         <input
           id="overviewButton"
           type="button"
