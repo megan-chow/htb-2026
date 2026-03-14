@@ -1,6 +1,5 @@
 import "./style.css";
 
-
 document.getElementById("generateBtn").addEventListener("click", async () => {
   const url = document.getElementById("repoInput").value.trim();
   const output = document.getElementById("output");
