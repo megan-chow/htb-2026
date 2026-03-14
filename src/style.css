@@ -15,23 +15,29 @@ body {
 		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
 		var(--dot-color);
 
-    margin-left: var(--marginAvg);
-    margin-right: var(--marginAvg);
-    margin-top: 0px;
-    margin-bottom: 0px;
+    /* margin-left: var(--marginAvg);
+    margin-right: var(--marginAvg); */
+    /* margin-top: 0px;
+    margin-bottom: 0px; */
+
+    margin: 0;
     padding:0px;
     font-family: 'Consolas';
-}
-
-.header {
-  display: grid;
-  grid-template-columns: 0.35fr 1fr 0.3fr;
 }
 
 .page {
   display: grid;
   height: 100vh; /* full screen height */
+  width: 100%;
   grid-template-rows: 16vh 84vh;
+  row-gap: 20px;
+  /* grid-template-columns: 20vw 80vw; */
+}
+
+.header {
+  display: grid;
+  grid-row: 1;
+  grid-template-columns: 0.35fr 1.3fr;
 }
 
 #landing-heading {
@@ -71,20 +77,31 @@ body {
 }
 
 #searchbar {
-  margin-top:50px;
-  margin-bottom:50px;
+  /* margin-top:50px;
+  margin-bottom:50px; */
+  grid-row: 1;
+  grid-column: 2;
   display: grid;
   grid-template-columns: 5% 95%;
   align-content: center;
   color:white;
   border: 4px var(--bg) outset;
   border-radius: var(--borderR);
-  align-content: center;
 
   background-color:var(--bg);
 }
 
+#searchbar img {
+  grid-column: 1;
+}
+
+#search{
+  grid-column: 2;
+}
+
 #userBoard {
+  grid-row: 1;
+  grid-column: 1;
   grid-template-rows: 6% 94%;
   border: 4px var(--bg) outset;
   background: var(--prim);
@@ -97,30 +114,30 @@ body {
 }
 
 #logo {
+  grid-row: 1;
+  grid-column: 1;
   text-align: center;
   align-content: center;
   border: 4px var(--bg) outset;
   border-radius: var(--borderR);
-  margin-top: 30px;
+  /* margin-top: 30px;
   margin-bottom: 30px;
-  margin-right: 30px;
+  margin-right: 30px; */
   background-color: var(--bg);
   color:white;
 }
 
-#slogan {
-  text-align: center;
-  align-content: center;
-  color:white;
-}
-
 #main {
+  grid-row: 2;
+  grid-column: 1;
   display:grid;
   grid-template-columns: 20% 80%;
   margin-bottom: 30px;
 }
 
 #statsPage {
+  grid-row: 1;
+  grid-column: 2;
   background: #151520;
   background: linear-gradient(120deg, rgba(21, 21, 21, 1) 0%, rgba(21, 21, 32, 1) 100%);
   border: 4px var(--bg) outset;
