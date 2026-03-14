@@ -279,3 +279,20 @@ body {
   line-height: 2em;
   text-align: center;
       }
+
+#contributorSelector {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  align-items: left;
+  gap: 10px;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+#contributorSearch {
+
+  background-color: #151515 ;
+  color: white;
+  border: var(--prim) solid 0px;
+}

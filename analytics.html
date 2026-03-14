@@ -21,7 +21,7 @@
       <img src="./gitico.png" />
       <div id="search">
         <input id="repoInput" placeholder="Enter GitHub repository URL"
-          value="https://github.com/taeu0913/1800_202610_BBY21/" />
+          value="https://github.com/sdv-dev/SDGym" />
         <button id="generateBtn">%</button>
         <pre id="output" style="display: none"></pre>
       </div>
@@ -40,6 +40,15 @@
         ACTUAL STATS
         <div style="width: 500px">
           <canvas id="acquisitions"></canvas>
+          
+          <input type="text" id="contributorSearch" placeholder="Search contributors" />
+          <div id="contributorSelector"></div>
+          
+          <label>
+            <input type="checkbox" id="toggleOther" checked />
+            Show Other
+          </label>
+
         </div>
 
         <div id="test"></div>
