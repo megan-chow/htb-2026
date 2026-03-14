@@ -2,19 +2,6 @@ import "./style.css";
 import { Octokit } from "https://esm.sh/octokit";
 
 
-document.getElementById("generateBtn").addEventListener("click", async () => {
-  const url = document.getElementById("repoInput").value.trim();
-  const output = document.getElementById("output");
-
-  try {
-    const { owner, repo } = parseRepoUrl(url);
-
-    // Redirect to analytics page with query param
-    window.location.href = `analytics.html?owner=${owner}&repo=${repo}`;
-  } catch (err) {
-    output.textContent = "Error: " + err.message;
-  }
-});
 
 const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
@@ -49,13 +36,27 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
   try {
     const { owner, repo } = parseRepoUrl(url);
 
-    const insights = await generateInsights(owner, repo);
-
-    output.textContent = JSON.stringify(insights, null, 2);
+    // Redirect to analytics page with query param
+    window.location.href = `analytics.html?owner=${owner}&repo=${repo}`;
   } catch (err) {
     output.textContent = "Error: " + err.message;
   }
 });
+
+// document.getElementById("generateBtn").addEventListener("click", async () => {
+//   const url = document.getElementById("repoInput").value.trim();
+//   const output = document.getElementById("output");
+
+//   try {
+//     const { owner, repo } = parseRepoUrl(url);
+
+//     const insights = await generateInsights(owner, repo);
+
+//     output.textContent = JSON.stringify(insights, null, 2);
+//   } catch (err) {
+//     output.textContent = "Error: " + err.message;
+//   }
+// });
 
 function parseRepoUrl(url) {
   const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)(\/|$)/);
