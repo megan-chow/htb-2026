@@ -1,4 +1,4 @@
-:root{
+:root {
     --dot-bg:#202429;
     --dot-color: #AAAAAA;
     --bg: #25292f;
@@ -8,7 +8,7 @@
     --marginAvg: 50px;
 }
 
-body{
+body {
 	background:
 		linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
 		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
@@ -21,18 +21,18 @@ body{
     padding:0px;
 }
 
-.header{
+.header {
   display: grid;
   grid-template-columns: 0.35fr 1fr 0.3fr;
 }
 
-.page{
+.page {
   display: grid;
   height: 100vh; /* full screen height */
   grid-template-rows: 0.1fr 1fr;
 }
 
-#searchbar{
+#searchbar {
   display: grid;
   grid-template-columns: 5% 95%;
   text-align: center;
@@ -45,7 +45,7 @@ body{
   background-color:rgb(186, 0, 0);
 }
 
-#userBoard{
+#userBoard {
   display:grid;
   overflow-y: auto;
   background-color: aqua;
@@ -55,7 +55,7 @@ body{
   border-radius: var(--borderR);
 }
 
-#logo{
+#logo {
   text-align: center;
   align-content: center;
   border: 4px red inset;
@@ -67,23 +67,23 @@ body{
   color:white;
 }
 
-#slogan{
+#slogan {
   text-align: center;
   align-content: center;
   color:white;
 }
 
-#main{
-    display:grid;
-    grid-template-columns: 20% 80%;
-    margin-bottom: 30px;
+#main {
+  display:grid;
+  grid-template-columns: 20% 80%;
+  margin-bottom: 30px;
 }
 
-.userTabsList{
+.userTabsList {
   color:blue;
 }
 
-#statsPage{
+#statsPage {
   display:grid;
   grid-template-rows: 5% 95%;
   background: #151520;
@@ -96,8 +96,12 @@ body{
   color:white;
 }
 
-#stats{
+#stats {
   border-radius: var(--borderR);
   background-color: var(--bg);
   padding: 25px;
+}
+
+#output {
+  color: white;
 }
