@@ -19,6 +19,7 @@ body {
     margin-top: 0px;
     margin-bottom: 0px;
     padding:0px;
+    font-family: 'Consolas';
 }
 
 .header {
@@ -82,9 +83,10 @@ body {
 }
 
 #userBoard {
+  grid-template-rows: 6% 94%;
+  background: #151515;
   display:grid;
   overflow-y: auto;
-  background-color: aqua;
   margin-bottom: 5px;
   margin-right: 10px;
   margin-left: 4px;
@@ -115,15 +117,11 @@ body {
   margin-bottom: 30px;
 }
 
-.userTabsList {
-  color:blue;
-}
-
 #statsPage {
-  display:grid;
-  grid-template-rows: 5% 95%;
   background: #151520;
   background: linear-gradient(120deg, rgba(21, 21, 21, 1) 0%, rgba(21, 21, 32, 1) 100%);
+  display:grid;
+  grid-template-rows: 5% 95%;
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
@@ -143,13 +141,37 @@ body {
 }
 
 .contributor {
+  font-size: large;
+  color:var(--dot-color);
+  margin:20px;
   display: flex;
   height: 3rem;
   align-items: center;
+  gap:15px;
+  border-radius: var(--borderR);
+  background-color: var(--bg);
+}
+
+.contributor:hover {
+  display: flex;
+  height: 3rem;
+  align-items: center;
+  background-color: #373d46;
+  color:white;
+  cursor:pointer;
 }
 
 .contributor img {
+  margin-left:5px;
   height: 80%;
   object-fit: contain;
   border-radius: 50%;
+}
+
+.titles{
+  color: var(--dot-color);
+}
+
+#userBoard > .titles{
+  text-align: center;
 }
