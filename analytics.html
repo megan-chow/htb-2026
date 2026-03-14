@@ -11,21 +11,36 @@
     <header class="header">
       <div id="logo">LOGOPLACEHOLDER</div>
       <div id="searchbar">
-        <div>GITICO</div>
-        <div>PLACEHOLDER FOR THE SEARCHBAR</div>
+        <img src="./public/gitico.png"></img>
+        <div id="search">
+          <input 
+      id="repoInput"
+      placeholder="Enter GitHub repository URL"
+      value="https://github.com/taeu0913/1800_202610_BBY21/"
+    />
+    <button id="generateBtn">%</button>
+    <pre id="output" style="display:none;"></pre>
       </div>
-      <div id="slogan">SLOGANPLACEHOLDER</div>
+    </div>
     </header>
 
     
     <main id="main">
       <div id="userBoard">
-        <div class="userTabslist" style="background-color: yellow;">Loading...</div>
+        <div class="titles">
+          <h2>USERS</h2>
+        </div>
+        <div class="userTabslist">Loading...</div>
         
       </div>
       <div id="statsPage">
         <div id="contributorResultsHeading">Select a contributor</div>
-        <div id="stats">ACTUAL STATS</div>
+        <div id="stats">
+          ACTUAL STATS
+          <div style="width: 500px">
+            <canvas id="acquisitions"></canvas>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -36,6 +51,8 @@
     />
     <button id="generateBtn">Generate Insights</button>
     <pre id="output" style="display:none;"></pre>
+    <!-- JS Scripts n shiiii -->
     <script type="module" src="/src/analytics.js"></script>
+    <script type="module" src="/src/acquisitions.js"></script>
   </body>
 </html>
