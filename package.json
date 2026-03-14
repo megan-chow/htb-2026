@@ -13,6 +13,7 @@
     "parcel": "^2.6.2"
   },
   "dependencies": {
+    "diff2html": "^3.4.56",
     "octokit": "^5.0.5",
     "@cubejs-client/core": "^0.31.0",
     "chart.js": "^4.0.0"
