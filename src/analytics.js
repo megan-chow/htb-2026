@@ -19,6 +19,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         `https://github.com/${owner}/${repo}`;
 
       const insights = await generateInsights(owner, repo);
+      console.log("print");
       // output.textContent = JSON.stringify(insights, null, 2);
       localStorage.setItem("insights", JSON.stringify(insights));
     } catch (err) {
@@ -132,6 +133,34 @@ async function getCommitDetails(owner, repo, sha) {
 }
 
 async function getContributorChanges(owner, repo) {
+  // const commits = await getRecentCommits(owner, repo);
+
+  // const contributors = {};
+
+  // for (const commit of commits) {
+  //   const sha = commit.sha;
+  //   const author = commit.author?.login || "Unknown";
+
+  //   const details = await getCommitDetails(owner, repo, sha);
+
+  //   if (!contributors[author]) {
+  //     contributors[author] = [];
+  //   }
+
+  //   for (const file of details.files) {
+  //     contributors[author].push({
+  //       sha,
+  //       filename: file.filename,
+  //       additions: file.additions,
+  //       deletions: file.deletions,
+  //       patch: file.patch,
+  //     });
+  //   }
+  // }
+
+  // return contributors;
+
+
   const commits = await getRecentCommits(owner, repo);
 
   const contributors = {};
@@ -146,15 +175,20 @@ async function getContributorChanges(owner, repo) {
       contributors[author] = [];
     }
 
-    for (const file of details.files) {
-      contributors[author].push({
-        sha,
+    // Group all files for this commit into one object
+    const commitEntry = {
+      sha,
+      message: details.commit.message,
+      date: details.commit.author.date,
+      files: details.files.map(file => ({
         filename: file.filename,
         additions: file.additions,
         deletions: file.deletions,
-        patch: file.patch,
-      });
-    }
+        patch: file.patch
+      }))
+    };
+
+    contributors[author].push(commitEntry);
   }
 
   return contributors;
@@ -164,7 +198,7 @@ async function getPullRequests(owner, repo) {
   const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
     owner,
     repo,
-    state: "closed",
+    state: "all",
     per_page: 50,
   });
 
