@@ -1,12 +1,12 @@
-import { Octokit } from "https://esm.sh/octokit?bundle";
+// import { Octokit } from "https://esm.sh/octokit?bundle";
 
 import Chart from 'chart.js/auto';
 
 // import {getContributorStats, getRepoDetails} from "./analytics.js";
 
-const octokit = new Octokit({
-  auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
-});
+// const octokit = new Octokit({
+//   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
+// });
 
 const unix = 1742083200;
 const date = new Date(unix * 1000);
@@ -82,73 +82,73 @@ function buildDatasets(contributors, labels) {
   });
 }
 
- async function getContributorStats(owner, repo) {
-  for (let i = 0; i < 5; i++) {
-    const res = await octokit.request(
-      "GET /repos/{owner}/{repo}/stats/contributors",
-      { owner, repo }
-    );
+// async function getContributorStats(owner, repo) {
+//   for (let i = 0; i < 5; i++) {
+//     const res = await octokit.request(
+//       "GET /repos/{owner}/{repo}/stats/contributors",
+//       { owner, repo }
+//     );
 
-    if (res.status === 202) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      continue;
-    }
+//     if (res.status === 202) {
+//       await new Promise(resolve => setTimeout(resolve, 1000));
+//       continue;
+//     }
 
-    return res.data;
-  }
+//     return res.data;
+//   }
 
-  throw new Error("GitHub stats are still being generated. Try again.");
-}
-
-
-async function getRepoDetails(owner, repo) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}", {
-    owner,
-    repo,
-  });
-
-  return res.data;
-}
+//   throw new Error("GitHub stats are still being generated. Try again.");
+// }
 
 
+// async function getRepoDetails(owner, repo) {
+//   const res = await octokit.request("GET /repos/{owner}/{repo}", {
+//     owner,
+//     repo,
+//   });
+
+//   return res.data;
+// }
 
 
-async function renderContributorChart() {
-  const [repoDetails, contributors] = await Promise.all([
-    getRepoDetails(owner, repo),
-    getContributorStats(owner, repo),
-  ]);
 
-  const labels = getMonthLabelsForRepo(repoDetails.created_at);
-  const datasets = buildDatasets(contributors, labels);
 
-  const ctx = document.getElementById("acquisitions");
+// async function renderContributorChart() {
+//   const [repoDetails, contributors] = await Promise.all([
+//     getRepoDetails(owner, repo),
+//     getContributorStats(owner, repo),
+//   ]);
 
-  contributorChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets,
-    },
-    options: {
-      responsive: true,
-      interaction: {
-        mode: "index",
-        intersect: false,
-      },
-      plugins: {
-        title: {
-          display: true,
-          text: "Commits by Contributor per Month",
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-}
+//   const labels = getMonthLabelsForRepo(repoDetails.created_at);
+//   const datasets = buildDatasets(contributors, labels);
 
-renderContributorChart().catch(console.error);
+//   const ctx = document.getElementById("acquisitions");
+
+//   contributorChart = new Chart(ctx, {
+//     type: "line",
+//     data: {
+//       labels,
+//       datasets,
+//     },
+//     options: {
+//       responsive: true,
+//       interaction: {
+//         mode: "index",
+//         intersect: false,
+//       },
+//       plugins: {
+//         title: {
+//           display: true,
+//           text: "Commits by Contributor per Month",
+//         },
+//       },
+//       scales: {
+//         y: {
+//           beginAtZero: true,
+//         },
+//       },
+//     },
+//   });
+// }
+
+// renderContributorChart().catch(console.error);
