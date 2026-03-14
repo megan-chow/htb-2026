@@ -8,30 +8,34 @@
   </head>
   <body class="page">
       
-      <header class="header">
-        <div id="logo">LOGOPLACEHOLDER</div>
-        <div id="searchbar">
-          <div>GITICO</div>
-          <div>PLACEHOLDER FOR THE SEARCHBAR</div>
-        </div>
-        <div id="slogan">SLOGANPLACEHOLDER</div>
-      </header>
+    <header class="header">
+      <div id="logo">LOGOPLACEHOLDER</div>
+      <div id="searchbar">
+        <div>GITICO</div>
+        <div>PLACEHOLDER FOR THE SEARCHBAR</div>
+      </div>
+      <div id="slogan">SLOGANPLACEHOLDER</div>
+    </header>
 
-      
-      <main id="main">
-        <div id="userBoard">
-          <div class="userTabslist" style="background-color: yellow;">lol</div>
-          
-        </div>
-        <div id="statsPage">
-          <div>STATS</div>
-          <div id="stats">ACTUAL STATS</div>
-        </div>
-      </main>
+    
+    <main id="main">
+      <div id="userBoard">
+        <div class="userTabslist" style="background-color: yellow;">lol</div>
+        
+      </div>
+      <div id="statsPage">
+        <div>STATS</div>
+        <div id="stats">ACTUAL STATS</div>
+      </div>
+    </main>
 
-    <input id="repoInput" placeholder="https://github.com/taeu0913/1800_202610_BBY21/">
+    <input 
+      id="repoInput"
+      placeholder="Enter GitHub repository URL"
+      value="https://github.com/taeu0913/1800_202610_BBY21/"
+    />
     <button id="generateBtn">Generate Insights</button>
-    <div id="output"></div>
+    <pre id="output" style="display:none;"></pre>
     <script type="module" src="/src/analytics.js"></script>
   </body>
 </html>
