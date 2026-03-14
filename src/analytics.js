@@ -164,7 +164,7 @@ async function getPullRequests(owner, repo) {
   const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
     owner,
     repo,
-    state: "closed",
+    state: "all",
     per_page: 50,
   });
 
