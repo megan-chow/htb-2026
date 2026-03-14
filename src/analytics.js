@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const owner = params.get("owner");
   const repo = params.get("repo");
-
+  console.log("AAAAAAAAA");
   if (owner && repo) {
     try {
       // Pre-fill the search bar
@@ -22,6 +22,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       console.log("print");
       // output.textContent = JSON.stringify(insights, null, 2);
       localStorage.setItem("insights", JSON.stringify(insights));
+      localStorage.setItem("owner", owner);
+      localStorage.setItem("repo", repo);
     } catch (err) {
       output.textContent = "Error: " + err.message;
     }
@@ -91,20 +93,25 @@ async function generateInsights(owner, repo) {
 }
 
 async function getContributors(owner, repo) {
+  console.log("getContributors");
   const res = await octokit.request("GET /repos/{owner}/{repo}/contributors", {
     owner,
     repo,
   });
 
+  console.log("getContributors done");
   return res.data.map((c) => ({
     username: c.login,
     avatar: c.avatar_url,
     url: c.html_url,
     commits: c.contributions,
+    commits: c.contributions,
   }));
 }
+export { getContributors };
 
 async function getCommitActivity(owner, repo) {
+  console.log("getcommitactivity")
   const res = await octokit.request(
     "GET /repos/{owner}/{repo}/stats/commit_activity",
     { owner, repo },
@@ -112,10 +119,29 @@ async function getCommitActivity(owner, repo) {
   return res.data;
 }
 
+async function getContributorStats(owner, repo) {
+  for (let i = 0; i < 5; i++) {
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/stats/contributors",
+      { owner, repo },
+    );
+
+    if (res.status === 202) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      continue;
+    }
+
+    return res.data;
+  }
+
+  throw new Error("GitHub stats are still being generated. Try again.");
+}
+
 async function getRecentCommits(owner, repo, limit = 20) {
   const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
     owner,
     repo,
+    per_page: limit,
     per_page: limit,
   });
 
@@ -133,6 +159,7 @@ async function getCommitDetails(owner, repo, sha) {
 }
 
 async function getContributorChanges(owner, repo) {
+  // console.log("AAAAAAA");
   // const commits = await getRecentCommits(owner, repo);
 
   // const contributors = {};
@@ -162,7 +189,7 @@ async function getContributorChanges(owner, repo) {
 
 
   const commits = await getRecentCommits(owner, repo);
-
+  // console.log("BBBBBBBB");
   const contributors = {};
 
   for (const commit of commits) {
@@ -194,18 +221,39 @@ async function getContributorChanges(owner, repo) {
   return contributors;
 }
 
+async function getRepoDetails(owner, repo) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner,
+    repo,
+  });
+
+  return res.data;
+}
+
 async function getPullRequests(owner, repo) {
+  console.log("PR");
   const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
     owner,
     repo,
     state: "all",
     per_page: 50,
   });
-
+  console.log("PRDONE");
   return res.data.map((pr) => ({
     number: pr.number,
+    title: pr.title,
+    state: pr.state,
+    author: {
+      username: pr.user.login,
+      avatar: pr.user.avatar_url,
+    },
+    labels: pr.labels.map((l) => l.name),
+    sourceBranch: pr.head.ref,
+    targetBranch: pr.base.ref,
     created: pr.created_at,
+    closed: pr.closed_at,
     merged: pr.merged_at,
+    description: pr.body,
     timeToMergeHours: pr.merged_at
       ? (new Date(pr.merged_at) - new Date(pr.created_at)) / 36e5
       : null,
@@ -265,3 +313,17 @@ function renderContributors(contributors) {
     );
   });
 }
+
+// Listener for contributor selector
+document.querySelector(".userTabslist").addEventListener("click", (e) => {
+  const contributor = e.target.closest(".contributor");
+  if (!contributor) return;
+
+  const username = contributor.querySelector(".contributor-name").textContent;
+  // console.log("Clicked contributor:", username);
+
+  // Do stuff
+  document.getElementById("contributorResultsHeading").textContent =
+    "Analytics for contributer " + username;
+  localStorage.setItem("username", username);
+});
