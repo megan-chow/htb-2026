@@ -170,8 +170,19 @@ async function getPullRequests(owner, repo) {
 
   return res.data.map((pr) => ({
     number: pr.number,
+    title: pr.title,
+    state: pr.state,
+    author: {
+      username: pr.user.login,
+      avatar: pr.user.avatar_url,
+    },
+    labels: pr.labels.map((l) => l.name),
+    sourceBranch: pr.head.ref,
+    targetBranch: pr.base.ref,
     created: pr.created_at,
+    closed: pr.closed_at,
     merged: pr.merged_at,
+    description: pr.body,
     timeToMergeHours: pr.merged_at
       ? (new Date(pr.merged_at) - new Date(pr.created_at)) / 36e5
       : null,
