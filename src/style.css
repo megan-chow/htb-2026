@@ -6,6 +6,7 @@
     --dot-space: 20px;
     --borderR: 25px;
     --marginAvg: 50px;
+    --prim: #151515;
 }
 
 body {
@@ -14,22 +15,29 @@ body {
 		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
 		var(--dot-color);
 
-    margin-left: var(--marginAvg);
-    margin-right: var(--marginAvg);
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding:0px;
-}
+    /* margin-left: var(--marginAvg);
+    margin-right: var(--marginAvg); */
+    /* margin-top: 0px;
+    margin-bottom: 0px; */
 
-.header {
-  display: grid;
-  grid-template-columns: 0.35fr 1fr 0.3fr;
+    margin: 0;
+    padding:0px;
+    font-family: 'Consolas';
 }
 
 .page {
   display: grid;
   height: 100vh; /* full screen height */
+  width: 100%;
   grid-template-rows: 16vh 84vh;
+  row-gap: 20px;
+  /* grid-template-columns: 20vw 80vw; */
+}
+
+.header {
+  display: grid;
+  grid-row: 1;
+  grid-template-columns: 0.35fr 1.3fr;
 }
 
 #landing-heading {
@@ -69,24 +77,36 @@ body {
 }
 
 #searchbar {
+  /* margin-top:50px;
+  margin-bottom:50px; */
+  grid-row: 1;
+  grid-column: 2;
   display: grid;
   grid-template-columns: 5% 95%;
-  text-align: center;
   align-content: center;
   color:white;
-  border: 4px red inset;
+  border: 4px var(--bg) outset;
   border-radius: var(--borderR);
-  margin-top: var(--marginAvg);
-  margin-bottom:var(--marginAvg);
-  background-color:rgb(186, 0, 0);
+
+  background-color:var(--bg);
+}
+
+#searchbar img {
+  grid-column: 1;
+}
+
+#search{
+  grid-column: 2;
 }
 
 #userBoard {
-  /* display:grid; */
+  grid-row: 1;
   grid-column: 1;
-  height: 100%;
-  /* overflow-y: auto; */
-  background-color: aqua;
+  grid-template-rows: 6% 94%;
+  border: 4px var(--bg) outset;
+  background: var(--prim);
+  display:grid;
+  overflow-y: auto;
   margin-bottom: 5px;
   margin-right: 10px;
   margin-left: 4px;
@@ -94,40 +114,35 @@ body {
 }
 
 #logo {
+  grid-row: 1;
+  grid-column: 1;
   text-align: center;
   align-content: center;
-  border: 4px red inset;
+  border: 4px var(--bg) outset;
   border-radius: var(--borderR);
-  margin-top: 30px;
+  /* margin-top: 30px;
   margin-bottom: 30px;
-  margin-right: 30px;
-  background-color: rgb(211, 0, 0);
-  color:white;
-}
-
-#slogan {
-  text-align: center;
-  align-content: center;
+  margin-right: 30px; */
+  background-color: var(--bg);
   color:white;
 }
 
 #main {
+  grid-row: 2;
+  grid-column: 1;
   display:grid;
   grid-template-columns: 20% 80%;
   margin-bottom: 30px;
 }
 
-.userTabsList {
-  color:blue;
-}
-
 #statsPage {
-  display:grid;
-  grid-row: 2;
+  grid-row: 1;
   grid-column: 2;
-  grid-template-rows: 5% 95%;
   background: #151520;
   background: linear-gradient(120deg, rgba(21, 21, 21, 1) 0%, rgba(21, 21, 32, 1) 100%);
+  border: 4px var(--bg) outset;
+  display:grid;
+  grid-template-rows: 5% 95%;
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
@@ -148,17 +163,67 @@ body {
 }
 
 .contributor {
+  font-size: large;
+  color:var(--dot-color);
+  margin:20px;
   display: flex;
   height: 3rem;
   align-items: center;
+  gap:15px;
+  border-radius: var(--borderR);
+  background-color: var(--bg);
+}
+
+.contributor:hover {
+  display: flex;
+  height: 3rem;
+  align-items: center;
+  background-color: #373d46;
+  color:white;
+  cursor:pointer;
 }
 
 .contributor img {
+  margin-left:5px;
   height: 80%;
   object-fit: contain;
   border-radius: 50%;
 }
 
-#contributorResultsHeading {
-  grid-row: 1;
+.titles{
+  color: var(--dot-color);
+}
+
+#userBoard > .titles{
+  text-align: center;
+}
+
+#search > #repoInput{
+  background-color: #353b43;
+  display:inline;
+  width: 90%;
+  margin:3px;
+  margin-top:4px;
+  margin-left:0px;
+  height:35px;
+  border-radius: var(--borderR);
+  padding-left: 20px;
+  border:var(--prim) solid 0px;
+}
+#search > #repoInput:focus{
+  outline:auto;
+  outline-color: #353b43;
+}
+
+
+#search > #generateBtn{
+  height: 40px;
+}
+
+#searchbar > img {
+  height: 45px;
+  width:45px;
+  margin-left:2px;
+  align-content: center;
+  margin-top: 1px;
 }
