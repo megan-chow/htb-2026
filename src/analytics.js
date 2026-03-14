@@ -17,8 +17,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       // Pre-fill the search bar
       document.getElementById("repoInput").value =
         `https://github.com/${owner}/${repo}`;
-      document.getElementById("repoInput").value =
-        `https://github.com/${owner}/${repo}`;
 
       const insights = await generateInsights(owner, repo);
       // output.textContent = JSON.stringify(insights, null, 2);
@@ -160,9 +158,9 @@ async function getCommitDetails(owner, repo, sha) {
 }
 
 async function getContributorChanges(owner, repo) {
-  console.log("AAAAAAA");
+  // console.log("AAAAAAA");
   const commits = await getRecentCommits(owner, repo);
-  console.log("BBBBBBBB");
+  // console.log("BBBBBBBB");
   const contributors = {};
 
   for (const commit of commits) {
