@@ -283,6 +283,8 @@ body {
 #contributorSelector {
   display: flex;
   flex-direction: column;
+  border: solid #151515 5px;
+  border-radius: var(--borderR);
   height: 100px;
   align-items: left;
   gap: 10px;
