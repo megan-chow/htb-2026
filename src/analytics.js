@@ -243,4 +243,5 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   // Do stuff
   document.getElementById("contributorResultsHeading").textContent =
     "Analytics for contributer " + username;
+  localStorage.setItem("username", username);
 });

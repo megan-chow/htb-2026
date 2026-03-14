@@ -1,24 +1,33 @@
 :root {
-    --dot-bg:#202429;
-    --dot-color: #AAAAAA;
-    --bg: #25292f;
-    --dot-size: 2px;
-    --dot-space: 20px;
-    --borderR: 25px;
-    --marginAvg: 50px;
+  --dot-bg: #202429;
+  --dot-color: #aaaaaa;
+  --bg: #25292f;
+  --dot-size: 2px;
+  --dot-space: 20px;
+  --borderR: 25px;
+  --marginAvg: 50px;
 }
 
 body {
-	background:
-		linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		var(--dot-color);
+  background:
+    linear-gradient(
+        90deg,
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    linear-gradient(
+        var(--dot-bg) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
 
-    margin-left: var(--marginAvg);
-    margin-right: var(--marginAvg);
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding:0px;
+  margin-left: var(--marginAvg);
+  margin-right: var(--marginAvg);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
 }
 
 .header {
@@ -73,16 +82,16 @@ body {
   grid-template-columns: 5% 95%;
   text-align: center;
   align-content: center;
-  color:white;
+  color: white;
   border: 4px red inset;
   border-radius: var(--borderR);
   margin-top: var(--marginAvg);
-  margin-bottom:var(--marginAvg);
-  background-color:rgb(186, 0, 0);
+  margin-bottom: var(--marginAvg);
+  background-color: rgb(186, 0, 0);
 }
 
 #userBoard {
-  display:grid;
+  display: grid;
   overflow-y: auto;
   background-color: aqua;
   margin-bottom: 5px;
@@ -100,36 +109,40 @@ body {
   margin-bottom: 30px;
   margin-right: 30px;
   background-color: rgb(211, 0, 0);
-  color:white;
+  color: white;
 }
 
 #slogan {
   text-align: center;
   align-content: center;
-  color:white;
+  color: white;
 }
 
 #main {
-  display:grid;
+  display: grid;
   grid-template-columns: 20% 80%;
   margin-bottom: 30px;
 }
 
 .userTabsList {
-  color:blue;
+  color: blue;
 }
 
 #statsPage {
-  display:grid;
+  display: grid;
   grid-template-rows: 5% 95%;
   background: #151520;
-  background: linear-gradient(120deg, rgba(21, 21, 21, 1) 0%, rgba(21, 21, 32, 1) 100%);
+  background: linear-gradient(
+    120deg,
+    rgba(21, 21, 21, 1) 0%,
+    rgba(21, 21, 32, 1) 100%
+  );
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
   border-radius: var(--borderR);
-  padding:25px;
-  color:white;
+  padding: 25px;
+  color: white;
 }
 
 #stats {
@@ -152,4 +165,9 @@ body {
   height: 80%;
   object-fit: contain;
   border-radius: 50%;
+}
+
+.overviewButton {
+  width: 20px;
+  height: 10px;
 }
