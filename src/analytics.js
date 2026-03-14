@@ -273,7 +273,6 @@ function renderContributors(contributors) {
 
 // Listener for contributor selector
 document.querySelector(".userTabslist").addEventListener("click", (e) => {
-document.querySelector(".userTabslist").addEventListener("click", (e) => {
   const contributor = e.target.closest(".contributor");
   if (!contributor) return;
 
@@ -287,4 +286,3 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
     "Analytics for contributer " + username;
 });
 
-});
