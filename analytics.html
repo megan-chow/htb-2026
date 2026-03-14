@@ -25,7 +25,12 @@
       </div>
       <div id="statsPage">
         <div id="contributorResultsHeading">Select a contributor</div>
-        <div id="stats">ACTUAL STATS</div>
+        <div id="stats">
+          ACTUAL STATS
+          <div style="width: 500px">
+            <canvas id="acquisitions"></canvas>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -36,6 +41,8 @@
     />
     <button id="generateBtn">Generate Insights</button>
     <pre id="output" style="display:none;"></pre>
+    <!-- JS Scripts n shiiii -->
     <script type="module" src="/src/analytics.js"></script>
+    <script type="module" src="/src/acquisitions.js"></script>
   </body>
 </html>

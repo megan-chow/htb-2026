@@ -1,8 +1,6 @@
 import "./style.css";
 import { Octokit } from "https://esm.sh/octokit?bundle";
 
-
-
 const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
 });
@@ -17,17 +15,22 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (owner && repo) {
     try {
       // Pre-fill the search bar
-      document.getElementById("repoInput").value = `https://github.com/${owner}/${repo}`;
+      document.getElementById("repoInput").value =
+        `https://github.com/${owner}/${repo}`;
 
       const insights = await generateInsights(owner, repo);
       // output.textContent = JSON.stringify(insights, null, 2);
       localStorage.setItem("insights", JSON.stringify(insights));
+      localStorage.setItem("owner", owner);
+      localStorage.setItem("repo", repo);
+      
     }
     catch (err) {
       output.textContent = "Error: " + err.message;
     }
   }
 });
+
 
 
 document.getElementById("generateBtn").addEventListener("click", async () => {
@@ -70,14 +73,15 @@ function parseRepoUrl(url) {
 }
 
 async function generateInsights(owner, repo) {
-  const [contributors, commits, commitDetails, pulls, issues, authors] = await Promise.all([
-    getContributors(owner, repo),
-    getCommitActivity(owner, repo),
-    getContributorChanges(owner, repo),
-    getPullRequests(owner, repo),
-    getIssues(owner, repo),
-    getAuthors(owner, repo),
-  ]);
+  const [contributors, commits, commitDetails, pulls, issues, authors] =
+    await Promise.all([
+      getContributors(owner, repo),
+      getCommitActivity(owner, repo),
+      getContributorChanges(owner, repo),
+      getPullRequests(owner, repo),
+      getIssues(owner, repo),
+      getAuthors(owner, repo),
+    ]);
 
   renderContributors(contributors);
 
@@ -92,42 +96,55 @@ async function generateInsights(owner, repo) {
 }
 
 async function getContributors(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/contributors",
-    { owner, repo }
-  );
+  const res = await octokit.request("GET /repos/{owner}/{repo}/contributors", {
+    owner,
+    repo,
+  });
 
-  return res.data.map(c => ({
+  return res.data.map((c) => ({
     username: c.login,
     avatar: c.avatar_url,
     url: c.html_url,
-    commits: c.contributions
+    commits: c.contributions,
   }));
 }
+export { getContributors };
 
-async function getCommitActivity(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/stats/commit_activity",
-    { owner, repo },
-  );
-  return res.data;
+export async function getContributorStats(owner, repo) {
+  for (let i = 0; i < 5; i++) {
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/stats/contributors",
+      { owner, repo }
+    );
+
+    if (res.status === 202) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      continue;
+    }
+
+    return res.data;
+  }
+
+  throw new Error("GitHub stats are still being generated. Try again.");
 }
+
 
 async function getRecentCommits(owner, repo, limit = 20) {
   const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
     owner,
     repo,
-    per_page: limit
+    per_page: limit,
   });
 
   return res.data; // array of commits
 }
 
 async function getCommitDetails(owner, repo, sha) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/commits/{sha}",
-    { owner, repo, sha }
-  );
+  const res = await octokit.request("GET /repos/{owner}/{repo}/commits/{sha}", {
+    owner,
+    repo,
+    sha,
+  });
 
   return res.data; // includes files[], patch, additions, deletions
 }
@@ -153,12 +170,21 @@ async function getContributorChanges(owner, repo) {
         filename: file.filename,
         additions: file.additions,
         deletions: file.deletions,
-        patch: file.patch
+        patch: file.patch,
       });
     }
   }
 
   return contributors;
+}
+
+export async function getRepoDetails(owner, repo) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner,
+    repo,
+  });
+
+  return res.data;
 }
 
 
@@ -222,18 +248,21 @@ function renderContributors(contributors) {
   let user_list = document.querySelector(".userTabslist");
 
   user_list.innerHTML = "";
-  contributors.forEach(c => {
-    user_list.insertAdjacentHTML("beforeend", `
+  contributors.forEach((c) => {
+    user_list.insertAdjacentHTML(
+      "beforeend",
+      `
       <div class="contributor">
         <img src="${c.avatar}" alt="avatar"/>
         <p class="contributor-name">${c.username}</p>
       </div>
-    `);
-  })
+    `,
+    );
+  });
 }
 
 // Listener for contributor selector
-document.querySelector(".userTabslist").addEventListener("click", e => {
+document.querySelector(".userTabslist").addEventListener("click", (e) => {
   const contributor = e.target.closest(".contributor");
   if (!contributor) return;
 
@@ -241,5 +270,6 @@ document.querySelector(".userTabslist").addEventListener("click", e => {
   // console.log("Clicked contributor:", username);
 
   // Do stuff
-  document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
+  document.getElementById("contributorResultsHeading").textContent =
+    "Analytics for contributer " + username;
 });
