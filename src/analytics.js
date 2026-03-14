@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const owner = params.get("owner");
   const repo = params.get("repo");
-
+  console.log("AAAAAAAAA");
   if (owner && repo) {
     try {
       // Pre-fill the search bar
@@ -94,11 +94,13 @@ async function generateInsights(owner, repo) {
 }
 
 async function getContributors(owner, repo) {
+  console.log("getContributors");
   const res = await octokit.request("GET /repos/{owner}/{repo}/contributors", {
     owner,
     repo,
   });
 
+  console.log("getContributors done");
   return res.data.map((c) => ({
     username: c.login,
     avatar: c.avatar_url,
@@ -109,7 +111,16 @@ async function getContributors(owner, repo) {
 }
 export { getContributors };
 
-export async function getContributorStats(owner, repo) {
+async function getCommitActivity(owner, repo) {
+  console.log("getcommitactivity")
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}/stats/commit_activity",
+    { owner, repo },
+  );
+  return res.data;
+}
+
+async function getContributorStats(owner, repo) {
   for (let i = 0; i < 5; i++) {
     const res = await octokit.request(
       "GET /repos/{owner}/{repo}/stats/contributors",
@@ -149,8 +160,9 @@ async function getCommitDetails(owner, repo, sha) {
 }
 
 async function getContributorChanges(owner, repo) {
+  console.log("AAAAAAA");
   const commits = await getRecentCommits(owner, repo);
-
+  console.log("BBBBBBBB");
   const contributors = {};
 
   for (const commit of commits) {
@@ -178,7 +190,7 @@ async function getContributorChanges(owner, repo) {
   return contributors;
 }
 
-export async function getRepoDetails(owner, repo) {
+async function getRepoDetails(owner, repo) {
   const res = await octokit.request("GET /repos/{owner}/{repo}", {
     owner,
     repo,
@@ -188,17 +200,29 @@ export async function getRepoDetails(owner, repo) {
 }
 
 async function getPullRequests(owner, repo) {
+  console.log("PR");
   const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
     owner,
     repo,
-    state: "closed",
+    state: "all",
     per_page: 50,
   });
-
+  console.log("PRDONE");
   return res.data.map((pr) => ({
     number: pr.number,
+    title: pr.title,
+    state: pr.state,
+    author: {
+      username: pr.user.login,
+      avatar: pr.user.avatar_url,
+    },
+    labels: pr.labels.map((l) => l.name),
+    sourceBranch: pr.head.ref,
+    targetBranch: pr.base.ref,
     created: pr.created_at,
+    closed: pr.closed_at,
     merged: pr.merged_at,
+    description: pr.body,
     timeToMergeHours: pr.merged_at
       ? (new Date(pr.merged_at) - new Date(pr.created_at)) / 36e5
       : null,
