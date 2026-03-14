@@ -80,6 +80,7 @@ async function generateInsights(owner, repo) {
       getPullRequests(owner, repo),
       getIssues(owner, repo),
       getAuthors(owner, repo),
+
     ]);
 
   renderContributors(contributors);
@@ -229,15 +230,13 @@ async function getContributorChanges(owner, repo) {
 
 
 async function getPullRequests(owner, repo) {
-  console.log("PR");
   const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
     owner,
     repo,
     state: "all",
-    per_page: 50,
+    per_page: 10,
   });
-  console.log("PRDONE");
-  return res.data.map((pr) => ({
+  return Promise.all(res.data.map(async(pr) => ({
     number: pr.number,
     title: pr.title,
     state: pr.state,
@@ -255,7 +254,13 @@ async function getPullRequests(owner, repo) {
     timeToMergeHours: pr.merged_at
       ? (new Date(pr.merged_at) - new Date(pr.created_at)) / 36e5
       : null,
-  }));
+    // Calls the async function to get data for specific pr
+    files: await getFilesChangedInPR(owner, repo, pr.number).catch(() => []),
+    reviews: await getReviews(owner, repo, pr.number).catch((e) => { console.error("reviews error", pr.number, e); return []; }),
+    commits: await getPRCommits(owner, repo, pr.number).catch((e) => { console.error("commits error", pr.number, e); return []; }),
+    comments: await getComments(owner, repo, pr.number).catch((e) => { console.error("comments error", pr.number, e); return []; }),
+
+  })));
 }
 
 async function getIssues(owner, repo) {
@@ -293,6 +298,42 @@ async function getAuthors(owner, repo) {
   // console.log(uniqueAuthors);
 
   return uniqueAuthors;
+}
+
+async function getFilesChangedInPR(owner, repo, pull_number) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
+    owner,
+    repo,
+    pull_number,
+  });
+  return res.data;
+}
+
+async function getReviews(owner, repo, pull_number) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", {
+    owner,
+    repo,
+    pull_number,
+  });
+  return res.data;
+}
+
+async function getPRCommits(owner, repo, pull_number) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", {
+    owner,
+    repo,
+    pull_number,
+  });
+  return res.data;
+}
+
+async function getComments(owner, repo, pull_number) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/issues/{issue_number}/comments", {
+    owner,
+    repo,
+    issue_number: pull_number,
+  });
+  return res.data;
 }
 
 function renderContributors(contributors) {
