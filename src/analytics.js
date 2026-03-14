@@ -16,14 +16,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   if (owner && repo) {
     try {
-        // Pre-fill the search bar
-        document.getElementById("repoInput").value = `https://github.com/${owner}/${repo}`;
+      // Pre-fill the search bar
+      document.getElementById("repoInput").value = `https://github.com/${owner}/${repo}`;
 
-        const insights = await generateInsights(owner, repo);
-        output.textContent = JSON.stringify(insights, null, 2);
+      const insights = await generateInsights(owner, repo);
+      // output.textContent = JSON.stringify(insights, null, 2);
+      localStorage.setItem("insights", JSON.stringify(insights));
     }
     catch (err) {
-        output.textContent = "Error: " + err.message;
+      output.textContent = "Error: " + err.message;
     }
   }
 });
@@ -79,8 +80,9 @@ async function generateInsights(owner, repo) {
   ]);
 
   renderContributors(contributors);
+
   return {
-    contributors: contributors, 
+    contributors: contributors,
     commitFrequency: commits,
     commitDetails: commitDetails,
     pullRequestStats: pulls,
@@ -96,7 +98,7 @@ async function getContributors(owner, repo) {
   );
 
   return res.data.map(c => ({
-    login: c.login,
+    username: c.login,
     avatar: c.avatar_url,
     url: c.html_url,
     commits: c.contributions
@@ -217,14 +219,27 @@ async function getAuthors(owner, repo) {
 }
 
 function renderContributors(contributors) {
-    let user_list = document.querySelector(".userTabslist");
+  let user_list = document.querySelector(".userTabslist");
 
-    contributors.forEach(c => {
-        user_list.insertAdjacentHTML("beforeend", `
-        <div class="contributor">
-            <img src="${c.avatar}" alt="avatar"/>
-            <p class="contributor-name">${c.login}</p>
-        </div>
-        `);
-    })
+  user_list.innerHTML = "";
+  contributors.forEach(c => {
+    user_list.insertAdjacentHTML("beforeend", `
+      <div class="contributor">
+        <img src="${c.avatar}" alt="avatar"/>
+        <p class="contributor-name">${c.username}</p>
+      </div>
+    `);
+  })
 }
+
+// Listener for contributor selector
+document.querySelector(".userTabslist").addEventListener("click", e => {
+  const contributor = e.target.closest(".contributor");
+  if (!contributor) return;
+
+  const username = contributor.querySelector(".contributor-name").textContent;
+  // console.log("Clicked contributor:", username);
+
+  // Do stuff
+  document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
+});
