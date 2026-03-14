@@ -17,6 +17,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       // Pre-fill the search bar
       document.getElementById("repoInput").value =
         `https://github.com/${owner}/${repo}`;
+      document.getElementById("repoInput").value =
+        `https://github.com/${owner}/${repo}`;
 
       const insights = await generateInsights(owner, repo);
       // output.textContent = JSON.stringify(insights, null, 2);
@@ -82,6 +84,15 @@ async function generateInsights(owner, repo) {
       getIssues(owner, repo),
       getAuthors(owner, repo),
     ]);
+  const [contributors, commits, commitDetails, pulls, issues, authors] =
+    await Promise.all([
+      getContributors(owner, repo),
+      getCommitActivity(owner, repo),
+      getContributorChanges(owner, repo),
+      getPullRequests(owner, repo),
+      getIssues(owner, repo),
+      getAuthors(owner, repo),
+    ]);
 
   renderContributors(contributors);
 
@@ -100,11 +111,17 @@ async function getContributors(owner, repo) {
     owner,
     repo,
   });
+  const res = await octokit.request("GET /repos/{owner}/{repo}/contributors", {
+    owner,
+    repo,
+  });
 
+  return res.data.map((c) => ({
   return res.data.map((c) => ({
     username: c.login,
     avatar: c.avatar_url,
     url: c.html_url,
+    commits: c.contributions,
     commits: c.contributions,
   }));
 }
@@ -134,12 +151,18 @@ async function getRecentCommits(owner, repo, limit = 20) {
     owner,
     repo,
     per_page: limit,
+    per_page: limit,
   });
 
   return res.data; // array of commits
 }
 
 async function getCommitDetails(owner, repo, sha) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/commits/{sha}", {
+    owner,
+    repo,
+    sha,
+  });
   const res = await octokit.request("GET /repos/{owner}/{repo}/commits/{sha}", {
     owner,
     repo,
@@ -170,6 +193,7 @@ async function getContributorChanges(owner, repo) {
         filename: file.filename,
         additions: file.additions,
         deletions: file.deletions,
+        patch: file.patch,
         patch: file.patch,
       });
     }
@@ -252,6 +276,10 @@ function renderContributors(contributors) {
     user_list.insertAdjacentHTML(
       "beforeend",
       `
+  contributors.forEach((c) => {
+    user_list.insertAdjacentHTML(
+      "beforeend",
+      `
       <div class="contributor">
         <img src="${c.avatar}" alt="avatar"/>
         <p class="contributor-name">${c.username}</p>
@@ -259,9 +287,13 @@ function renderContributors(contributors) {
     `,
     );
   });
+    `,
+    );
+  });
 }
 
 // Listener for contributor selector
+document.querySelector(".userTabslist").addEventListener("click", (e) => {
 document.querySelector(".userTabslist").addEventListener("click", (e) => {
   const contributor = e.target.closest(".contributor");
   if (!contributor) return;
@@ -272,4 +304,7 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   // Do stuff
   document.getElementById("contributorResultsHeading").textContent =
     "Analytics for contributer " + username;
+  document.getElementById("contributorResultsHeading").textContent =
+    "Analytics for contributer " + username;
 });
+
