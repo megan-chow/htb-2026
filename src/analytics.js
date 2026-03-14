@@ -17,10 +17,14 @@ window.addEventListener("DOMContentLoaded", async () => {
       // Pre-fill the search bar
       document.getElementById("repoInput").value =
         `https://github.com/${owner}/${repo}`;
+      document.getElementById("repoInput").value =
+        `https://github.com/${owner}/${repo}`;
 
       const insights = await generateInsights(owner, repo);
       // output.textContent = JSON.stringify(insights, null, 2);
       localStorage.setItem("insights", JSON.stringify(insights));
+      localStorage.setItem("owner", owner);
+      localStorage.setItem("repo", repo);
     } catch (err) {
       output.textContent = "Error: " + err.message;
     }
@@ -100,21 +104,34 @@ async function getContributors(owner, repo) {
     avatar: c.avatar_url,
     url: c.html_url,
     commits: c.contributions,
+    commits: c.contributions,
   }));
 }
+export { getContributors };
 
-async function getCommitActivity(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/stats/commit_activity",
-    { owner, repo },
-  );
-  return res.data;
+export async function getContributorStats(owner, repo) {
+  for (let i = 0; i < 5; i++) {
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/stats/contributors",
+      { owner, repo },
+    );
+
+    if (res.status === 202) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      continue;
+    }
+
+    return res.data;
+  }
+
+  throw new Error("GitHub stats are still being generated. Try again.");
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {
   const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
     owner,
     repo,
+    per_page: limit,
     per_page: limit,
   });
 
@@ -153,11 +170,21 @@ async function getContributorChanges(owner, repo) {
         additions: file.additions,
         deletions: file.deletions,
         patch: file.patch,
+        patch: file.patch,
       });
     }
   }
 
   return contributors;
+}
+
+export async function getRepoDetails(owner, repo) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner,
+    repo,
+  });
+
+  return res.data;
 }
 
 async function getPullRequests(owner, repo) {
