@@ -2,6 +2,7 @@ import "./analytics.js";
 
 // Store GitHub Repo Insights
 const insights = localStorage.getItem("insights");
+const commitDetails = insights.commitDetails;
 
 async function loadOverviewTab() {
   const container = document.getElementById("stats");
@@ -10,8 +11,12 @@ async function loadOverviewTab() {
   const res = await fetch("/components/overview-tab.html");
   container.innerHTML = await res.text();
 
+  const commit_frequency = document.getElementById("commit-frequency");
+  commit_frequency.innerHTML = "Total Commits: " + (await getTotalCommits());
+
   console.log(localStorage.username);
-  console.log(getTotalCommits());
+  getTotalCommits().then((result) => console.log(result));
+  getOpenPRs().then((result) => console.log(result));
 }
 window.loadOverviewTab = loadOverviewTab;
 
@@ -20,20 +25,30 @@ async function getUserName() {
 }
 
 async function getTotalCommits() {
-  // localStorage.insights.commitDetails.length();
-  // localStorage.insights.commitDetails.foreach();
-  // {
-  //   if (localStorage.insights.commitDetails.isArray(username)) {
-  //     return localStorage.insights.commitDetails.username.length;
-  //   }
-  // }
+  let name = localStorage.username;
+  const insights = JSON.parse(localStorage.getItem("insights"));
+  const commitDetails = insights.commitDetails;
+
+  if (commitDetails[name] && Array.isArray(commitDetails[name])) {
+    return commitDetails[name].length;
+  }
 }
 
 async function getCommitsInRange() {}
 
-async function getLastCommit() {}
+async function getLastCommit() {
+  return commitDetails[0];
+}
 
-async function getOpenPRs() {}
+async function getOpenPRs() {
+  // let count = 0;
+  // for (let i = 0; i < localStorage.pullRequestStats.length; i++) {
+  //   if (localStorage.pullRequestStats[i].state === "open") {
+  //     count++;
+  //   }
+  // }
+  // return count;
+}
 
 async function getOpenIssues() {}
 
