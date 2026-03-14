@@ -12,6 +12,7 @@
     "vite": "^8.0.0"
   },
   "dependencies": {
+    "diff2html": "^3.4.56",
     "octokit": "^5.0.5"
   }
 }

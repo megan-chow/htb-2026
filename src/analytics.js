@@ -1,6 +1,6 @@
 import "./style.css";
 import { Octokit } from "https://esm.sh/octokit?bundle";
-
+// import { renderCommitDetails } from "./commit_details.js";
 
 
 const octokit = new Octokit({
@@ -231,15 +231,3 @@ function renderContributors(contributors) {
     `);
   })
 }
-
-// Listener for contributor selector
-document.querySelector(".userTabslist").addEventListener("click", e => {
-  const contributor = e.target.closest(".contributor");
-  if (!contributor) return;
-
-  const username = contributor.querySelector(".contributor-name").textContent;
-  // console.log("Clicked contributor:", username);
-
-  // Do stuff
-  document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
-});
