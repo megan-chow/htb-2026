@@ -246,7 +246,7 @@ document.querySelector(".userTabslist").addEventListener("click", e => {
 });
 
 // ***********************
-// loading screen bullshit
+// loading screen
 // ***********************
 function hideLoader() {
     toend = true;
@@ -257,6 +257,10 @@ function hideLoader() {
       setTimeout(function() { overlay.remove(); }, 600);
     }, 800); // wait for the tube animation to finish its ending
   }
+  // THANK YOU Siyong Park on codepen.io !
+  // THANK YOU Siyong Park on codepen.io !
+  // THANK YOU Siyong Park on codepen.io !
+  // THANK YOU Siyong Park on codepen.io !
   var $body = document.body,
 		$wrap = document.getElementById('wrap'),
 

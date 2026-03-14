@@ -3,7 +3,7 @@
     --dot-color: #AAAAAA;
     --bg: #25292f;
     --dot-size: 2px;
-    --dot-space: 20px;
+    --dot-space: 20.6px;
     --borderR: 25px;
     --marginAvg: 50px;
     --prim: #151515;
@@ -15,10 +15,10 @@ body {
 		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
 		var(--dot-color);
 
-    /* margin-left: var(--marginAvg);
-    margin-right: var(--marginAvg); */
-    /* margin-top: 0px;
-    margin-bottom: 0px; */
+    margin-left: var(--marginAvg);
+    margin-right: var(--marginAvg);
+    margin-top: 0px;
+    margin-bottom: 0px;
 
     margin: 0;
     padding:0px;
@@ -77,8 +77,9 @@ body {
 }
 
 #searchbar {
-  /* margin-top:50px;
-  margin-bottom:50px; */
+  margin-top:9px;
+  margin-right:25px;
+  /* margin-bottom:50px; */
   grid-row: 1;
   grid-column: 2;
   display: grid;
@@ -107,22 +108,24 @@ body {
   background: var(--prim);
   display:grid;
   overflow-y: auto;
+  margin-top: 5px;
   margin-bottom: 5px;
-  margin-right: 10px;
-  margin-left: 4px;
+  margin-right: 2px;
+  margin-left: 28px;
   border-radius: var(--borderR);
 }
 
 #logo {
+  margin-top:9px;
   grid-row: 1;
   grid-column: 1;
   text-align: center;
   align-content: center;
   border: 4px var(--bg) outset;
   border-radius: var(--borderR);
-  /* margin-top: 30px;
-  margin-bottom: 30px;
-  margin-right: 30px; */
+   margin-right: 25px;
+  /*margin-bottom: 30px; */
+  margin-left: 28px; 
   background-color: var(--bg);
   color:white;
 }
@@ -146,6 +149,7 @@ body {
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
+  margin-top:5px;
   border-radius: var(--borderR);
   padding:25px;
   color:white;
@@ -221,7 +225,7 @@ body {
 
 #searchbar > img {
   height: 45px;
-  width:45px;
+  width: 45px;
   margin-left:2px;
   align-content: center;
   margin-top: 1px;
