@@ -1,10 +1,5 @@
 import "./style.css";
-import { Octokit } from "https://esm.sh/octokit";
 
-
-const octokit = new Octokit({
-  auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
-});
 
 document.getElementById("generateBtn").addEventListener("click", async () => {
   const url = document.getElementById("repoInput").value.trim();

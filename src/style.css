@@ -105,3 +105,15 @@ body {
 #output {
   color: white;
 }
+
+.contributor {
+  display: flex;
+  height: 3rem;
+  align-items: center;
+}
+
+.contributor img {
+  height: 80%;
+  object-fit: contain;
+  border-radius: 50%;
+}

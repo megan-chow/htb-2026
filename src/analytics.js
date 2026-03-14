@@ -1,5 +1,5 @@
 import "./style.css";
-import { Octokit } from "https://esm.sh/octokit";
+import { Octokit } from "https://esm.sh/octokit?bundle";
 
 
 
@@ -78,6 +78,7 @@ async function generateInsights(owner, repo) {
     getAuthors(owner, repo),
   ]);
 
+  renderContributors(contributors);
   return {
     contributors: contributors, 
     commitFrequency: commits,
@@ -213,4 +214,17 @@ async function getAuthors(owner, repo) {
   // console.log(uniqueAuthors);
 
   return uniqueAuthors;
+}
+
+function renderContributors(contributors) {
+    let user_list = document.querySelector(".userTabslist");
+
+    contributors.forEach(c => {
+        user_list.insertAdjacentHTML("beforeend", `
+        <div class="contributor">
+            <img src="${c.avatar}" alt="avatar"/>
+            <p class="contributor-name">${c.login}</p>
+        </div>
+        `);
+    })
 }
