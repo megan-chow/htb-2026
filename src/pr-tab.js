@@ -1,8 +1,4 @@
 import "./style.css";
-import { Octokit } from "https://esm.sh/octokit?bundle";
-const octokit = new Octokit({
-    auth: import.meta.env.VITE_GITHUB_TOKEN,
-});
 window.addEventListener("DOMContentLoaded", async () =>{
     // search URL
     const params = new URLSearchParams(window.location.search);
