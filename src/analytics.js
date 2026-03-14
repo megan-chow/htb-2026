@@ -110,7 +110,6 @@ async function getContributors(owner, repo) {
     avatar: c.avatar_url,
     url: c.html_url,
     commits: c.contributions,
-    commits: c.contributions,
   }));
 }
 export { getContributors };
@@ -136,10 +135,12 @@ async function getContributorStats(owner, repo) {
 async function getRepoDetails(owner, repo) {
   const res = await octokit.request(
     "GET /repos/{owner}/{repo}",
-    { owner, repo }
+    { owner, repo, }
   );
-
-  return res.data;
+  
+  return ({
+    created_at: res.data.created_at,
+  });
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {

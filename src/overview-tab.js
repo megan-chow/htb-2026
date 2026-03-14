@@ -1,7 +1,8 @@
 import "./analytics.js";
 
 // Store GitHub Repo Insights
-const insights = localStorage.getItem("insights");
+const insights = JSON.parse(localStorage.getItem("insights"));
+// const insights = localStorage.getItem("insights");
 const commitDetails = insights.commitDetails;
 
 async function loadOverviewTab() {
@@ -14,9 +15,12 @@ async function loadOverviewTab() {
   const commit_frequency = document.getElementById("commit-frequency");
   commit_frequency.innerHTML = "Total Commits: " + (await getTotalCommits());
 
+  const open_pr = document.getElementById("open-pr");
+  open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
+
   console.log(localStorage.username);
-  getTotalCommits().then((result) => console.log(result));
-  getOpenPRs().then((result) => console.log(result));
+  console.log("Commits: " + (await getTotalCommits()));
+  console.log("Open PRs: " + (await getOpenPRs()));
 }
 window.loadOverviewTab = loadOverviewTab;
 
@@ -26,7 +30,7 @@ async function getUserName() {
 
 async function getTotalCommits() {
   let name = localStorage.username;
-  const insights = JSON.parse(localStorage.getItem("insights"));
+  // const insights = JSON.parse(localStorage.getItem("insights"));
   const commitDetails = insights.commitDetails;
 
   if (commitDetails[name] && Array.isArray(commitDetails[name])) {
@@ -34,20 +38,23 @@ async function getTotalCommits() {
   }
 }
 
-async function getCommitsInRange() {}
-
 async function getLastCommit() {
   return commitDetails[0];
 }
 
 async function getOpenPRs() {
-  // let count = 0;
-  // for (let i = 0; i < localStorage.pullRequestStats.length; i++) {
-  //   if (localStorage.pullRequestStats[i].state === "open") {
-  //     count++;
-  //   }
-  // }
-  // return count;
+  let count = 0;
+  const prs = insights.pullRequestStats;
+
+  for (let i = 0; i < insights.pullRequestStats.length; i++) {
+    if (
+      insights.pullRequestStats[i].state.open &&
+      insights.pullRequestStats[i].author.username === localData.username
+    ) {
+      count++;
+    }
+  }
+  return count;
 }
 
 async function getOpenIssues() {}
@@ -55,3 +62,5 @@ async function getOpenIssues() {}
 async function getClosedIssues() {}
 
 async function getGraph(graph_name) {}
+
+async function getCommitsInRange() {}
