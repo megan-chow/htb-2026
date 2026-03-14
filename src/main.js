@@ -31,17 +31,35 @@ function parseRepoUrl(url) {
 }
 
 async function generateInsights(owner, repo) {
-  const [commits, pulls, issues] = await Promise.all([
+  const [contributors, commits, commitDetails, pulls, issues] = await Promise.all([
+    getContributors(owner, repo),
     getCommitActivity(owner, repo),
+    getContributorChanges(owner, repo),
     getPullRequests(owner, repo),
     getIssues(owner, repo)
   ]);
 
   return {
+    contributors: contributors, 
     commitFrequency: commits,
+    commitDetails: commitDetails,
     pullRequestStats: pulls,
     issueStats: issues
   };
+}
+
+async function getContributors(owner, repo) {
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}/contributors",
+    { owner, repo }
+  );
+
+  return res.data.map(c => ({
+    login: c.login,
+    avatar: c.avatar_url,
+    url: c.html_url,
+    commits: c.contributions
+  }));
 }
 
 async function getCommitActivity(owner, repo) {
@@ -51,6 +69,56 @@ async function getCommitActivity(owner, repo) {
   );
   return res.data;
 }
+
+async function getRecentCommits(owner, repo, limit = 20) {
+  const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
+    owner,
+    repo,
+    per_page: limit
+  });
+
+  return res.data; // array of commits
+}
+
+async function getCommitDetails(owner, repo, sha) {
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}/commits/{sha}",
+    { owner, repo, sha }
+  );
+
+  return res.data; // includes files[], patch, additions, deletions
+}
+
+async function getContributorChanges(owner, repo) {
+  const commits = await getRecentCommits(owner, repo);
+
+  const contributors = {};
+
+  for (const commit of commits) {
+    const sha = commit.sha;
+    const author = commit.author?.login || "Unknown";
+
+    const details = await getCommitDetails(owner, repo, sha);
+
+    if (!contributors[author]) {
+      contributors[author] = [];
+    }
+
+    for (const file of details.files) {
+      contributors[author].push({
+        sha,
+        filename: file.filename,
+        additions: file.additions,
+        deletions: file.deletions,
+        patch: file.patch
+      });
+    }
+  }
+
+  return contributors;
+}
+
+
 
 async function getPullRequests(owner, repo) {
   const res = await octokit.request(
