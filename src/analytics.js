@@ -71,9 +71,11 @@ function parseRepoUrl(url) {
 }
 
 async function generateInsights(owner, repo) {
-  const [contributors, commits, commitDetails, pulls, issues, authors] =
+  const [contributors, contributorStats, repoDetails, commits, commitDetails, pulls, issues, authors] =
     await Promise.all([
       getContributors(owner, repo),
+      getContributorStats(owner,repo),
+      getRepoDetails(owner, repo),
       getCommitActivity(owner, repo),
       getContributorChanges(owner, repo),
       getPullRequests(owner, repo),
@@ -85,6 +87,8 @@ async function generateInsights(owner, repo) {
 
   return {
     contributors: contributors,
+    contributorStats,
+    repoDetails,
     commitFrequency: commits,
     commitDetails: commitDetails,
     pullRequestStats: pulls,
@@ -121,21 +125,21 @@ async function getCommitActivity(owner, repo) {
 }
 
 async function getContributorStats(owner, repo) {
-  for (let i = 0; i < 5; i++) {
-    const res = await octokit.request(
-      "GET /repos/{owner}/{repo}/stats/contributors",
-      { owner, repo },
-    );
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}/stats/contributors",
+    { owner, repo }
+  );
 
-    if (res.status === 202) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      continue;
-    }
+  return res.data;
+}
 
-    return res.data;
-  }
+async function getRepoDetails(owner, repo) {
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}",
+    { owner, repo }
+  );
 
-  throw new Error("GitHub stats are still being generated. Try again.");
+  return res.data;
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {
@@ -190,14 +194,7 @@ async function getContributorChanges(owner, repo) {
   return contributors;
 }
 
-async function getRepoDetails(owner, repo) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}", {
-    owner,
-    repo,
-  });
 
-  return res.data;
-}
 
 async function getPullRequests(owner, repo) {
   console.log("PR");

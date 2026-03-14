@@ -14,7 +14,7 @@ const date = new Date(unix * 1000);
 const owner = localStorage.getItem("owner");
 const repo = localStorage.getItem("repo");
 
-// const insights = JSON.parse(localStorage.getItem("insights"));
+const insights = JSON.parse(localStorage.getItem("insights"));
 
 let contributorChart = null;
 
@@ -82,33 +82,65 @@ function buildDatasets(contributors, labels) {
   });
 }
 
-// async function getContributorStats(owner, repo) {
-//   for (let i = 0; i < 5; i++) {
-//     const res = await octokit.request(
-//       "GET /repos/{owner}/{repo}/stats/contributors",
-//       { owner, repo }
-//     );
+function renderContributorChart() {
+  if (!insights) {
+    throw new Error("No insights found in localStorage");
+  }
 
-//     if (res.status === 202) {
-//       await new Promise(resolve => setTimeout(resolve, 1000));
-//       continue;
-//     }
+  if (!insights.repoDetails?.created_at) {
+    throw new Error("repoDetails.created_at is missing from insights");
+  }
 
-//     return res.data;
-//   }
+  if (!insights.contributorStats) {
+    throw new Error("contributorStats is missing from insights");
+  }
 
-//   throw new Error("GitHub stats are still being generated. Try again.");
-// }
+  const labels = getMonthLabelsForRepo(insights.repoDetails.created_at);
+  const datasets = buildDatasets(insights.contributorStats, labels);
+
+  const ctx = document.getElementById("acquisitions");
+
+  contributorChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets,
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: `Commits by Contributor per Month: ${owner}/${repo}`,
+        },
+        legend: {
+          display: true,
+          onClick(e, legendItem, legend) {
+            const chart = legend.chart;
+            const datasetIndex = legendItem.datasetIndex;
+            const visible = chart.isDatasetVisible(datasetIndex);
+
+            chart.setDatasetVisibility(datasetIndex, !visible);
+            chart.update();
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
+
+renderContributorChart();
 
 
-// async function getRepoDetails(owner, repo) {
-//   const res = await octokit.request("GET /repos/{owner}/{repo}", {
-//     owner,
-//     repo,
-//   });
-
-//   return res.data;
-// }
 
 
 
