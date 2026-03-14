@@ -1,5 +1,4 @@
 import { html as diff2html } from 'diff2html';
-
 import "diff2html/bundles/css/diff2html.min.css";
 
 // Listener for contributor selector

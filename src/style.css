@@ -141,8 +141,7 @@ body {
   background: #151520;
   background: linear-gradient(120deg, rgba(21, 21, 21, 1) 0%, rgba(21, 21, 32, 1) 100%);
   border: 4px var(--bg) outset;
-  display:grid;
-  grid-template-rows: 5% 95%;
+  overflow-y: scroll;
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
@@ -226,4 +225,8 @@ body {
   margin-left:2px;
   align-content: center;
   margin-top: 1px;
+}
+
+.d2h-diff-table {
+  position: relative;
 }
