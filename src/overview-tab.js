@@ -64,3 +64,5 @@ async function getClosedIssues() {}
 async function getGraph(graph_name) {}
 
 async function getCommitsInRange() {}
+
+//Test
