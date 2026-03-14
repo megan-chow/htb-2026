@@ -109,7 +109,6 @@ async function getContributors(owner, repo) {
     avatar: c.avatar_url,
     url: c.html_url,
     commits: c.contributions,
-    commits: c.contributions,
   }));
 }
 export { getContributors };
@@ -139,7 +138,6 @@ async function getRepoDetails(owner, repo) {
   );
   
   return ({
-
     created_at: res.data.created_at,
   });
 }
