@@ -170,6 +170,7 @@ body {
     rgba(21, 21, 21, 1) 0%,
     rgba(21, 21, 32, 1) 100%
   );
+  overflow-y: scroll;
   margin-left: 20px;
   margin-right: 25px;
   margin-bottom: 5px;
@@ -184,6 +185,8 @@ body {
   background-color: var(--bg);
   padding: 25px;
   margin-top:10px;
+  overflow-y: scroll;
+
 }
 
 #output {
@@ -255,6 +258,10 @@ body {
   margin-top: 1px;
 }
 
+.d2h-diff-table {
+  position: relative;
+}
+
 #loading-overlay {
   position: fixed;
   inset: 0;
@@ -300,13 +307,33 @@ body {
 }
 
 .tab{
-  background-color: aqua;
+  background-color: var(--bg);
   padding-top: 15px;
   padding-bottom: 30px;
+
 }
 
 .split{
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 30px;
+}
+
+#contributorSelector {
+  display: flex;
+  flex-direction: column;
+  border: solid #151515 5px;
+  border-radius: var(--borderR);
+  height: 100px;
+  align-items: left;
+  gap: 10px;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+#contributorSearch {
+
+  background-color: #151515 ;
+  color: white;
+  border: var(--prim) solid 0px;
 }
