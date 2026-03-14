@@ -291,20 +291,22 @@ body {
   font-family: 'Amiko';
 }
 
-#contributorResultsHeading{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 #tabs{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   text-align: center;
-  border-radius: var(--borderR);
+  gap:1px;
 }
 
 .tab{
   background-color: aqua;
-  margin:3px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+
+.split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 30px;
 }
