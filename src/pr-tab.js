@@ -1,19 +1,21 @@
 import "./style.css";
-window.addEventListener("DOMContentLoaded", async () =>{
-    // search URL
-    const params = new URLSearchParams(window.location.search);
-    // gets owner of repo
-    const owner = params.get("owner");
-    // get repo
-    const repo = params.get("repo");
+window.addEventListener("DOMContentLoaded", async () => {
+  // search URL
+  const params = new URLSearchParams(window.location.search);
+  // gets owner of repo
+  const owner = params.get("owner");
+  // get repo
+  const repo = params.get("repo");
 });
 
 document.getElementById("showPRsBtn").addEventListener("click", () => {
-    const insights = JSON.parse(localStorage.getItem("insights"));
-    const prs = insights.pullRequestStats;
-    // replace later with the actual div
-    const statsDiv = document.getElementById("stats");
-    console.log(prs.length, prs.map(pr => pr.number));
+  const insights = JSON.parse(localStorage.getItem("insights"));
+  const prs = insights.pullRequestStats;
+  const statsDiv = document.getElementById("stats");
+  console.log(
+    prs.length,
+    prs.map((pr) => pr.number),
+  );
 
     statsDiv.innerHTML = prs.map((pr) => {
         const color = pr.state === "open" ? "#f5a52350" : pr.merged ? "#2ecc705a" : "#e74d3c64";
