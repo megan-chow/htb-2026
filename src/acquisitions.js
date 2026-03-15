@@ -409,38 +409,44 @@ function initializeContributorUI() {
 }
 
 export function displayGraphs() {
-    const insights = JSON.parse(localStorage.getItem("insights"));
-    const prs = insights.pullRequestStats;
-        // replace later with the actual div
-    const statsDiv = document.getElementById("stats");
+  const insights = JSON.parse(localStorage.getItem("insights"));
+  if (!insights) return;
 
-    statsDiv.innerHTML = 
-         `
-        <div style="width: 500px">
-            <canvas id="acquisitions"></canvas>
+  const statsDiv = document.getElementById("stats");
+  if (!statsDiv) return;
 
-          <input type="text" id="contributorSearch" placeholder="Search contributors"/>
-          <div id="contributorSelector"></div>
+  statsDiv.innerHTML = `
+    <div class="repo-graphs-layout">
+      <div class="graph-card">
+        <canvas id="acquisitions"></canvas>
 
-          <label>
-            <input type="checkbox" id="toggleOther" checked/>
-            Show Other
-          </label>
+        <input
+          type="text"
+          id="contributorSearch"
+          placeholder="Search contributors"
+        />
+        <div id="contributorSelector"></div>
 
-        </div>
-        <div>
-          <div id="test"></div>
-          <div style="width: 500px">
-            <canvas id="language-pie"></canvas>
+        <label>
+          <input type="checkbox" id="toggleOther" checked />
+          Show Other
+        </label>
+      </div>
 
-          </div>
-          <div style="width: 500px">
-            <canvas id="pr-donut"></canvas>
-          </div>
-        </div>
-    `;
-    
-    renderContributorChart();
+      <div class="graph-card">
+        <canvas id="language-pie"></canvas>
+      </div>
+
+      <div class="graph-card">
+        <canvas id="pr-donut"></canvas>
+      </div>
+    </div>
+  `;
+
+  initializeContributorUI();
+  renderContributorChart();
+  renderLanguagesChart();
+  renderPRDonutChart();
 }
 
 window.addEventListener("insightsReady", () => {

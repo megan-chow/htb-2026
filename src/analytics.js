@@ -29,6 +29,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       localStorage.setItem("insights", JSON.stringify(insights));
       localStorage.setItem("owner", owner);
       localStorage.setItem("repo", repo);
+
+      // default screen = repo-wide overview
+      localStorage.removeItem("tab");
+      setContributorTabsVisible(false);
+      displayGraphs();
     } catch (err) {
       output.textContent = "Error: " + err.message;
     }
@@ -420,27 +425,64 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
 // ADAM LOOK HERE
 function selectUser(username) {
   localStorage.setItem("username", username);
+
+  // default contributor tab
+  localStorage.setItem("tab", "Overview");
+
+  setRepoOverviewActive(false);
+  setContributorTabsVisible(true);
   renderContent();
 }
 
-// LOOK HERE TOO
 function selectTab(tab) {
-  document
-    .querySelectorAll(".tab")
-    .forEach((t) => t.classList.remove("active"));
-  document.getElementById(`tab-${tab}`).classList.add("active");
+  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+
+  const tabEl = document.getElementById(`tab-${tab}`);
+  if (tabEl) {
+    tabEl.classList.add("active");
+  }
+
   localStorage.setItem("tab", tab);
+  setRepoOverviewActive(false);
   renderContent();
 }
 
-// Render content based on current state
+function selectRepoOverview() {
+  localStorage.removeItem("tab");
+  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+  setRepoOverviewActive(true);
+  setContributorTabsVisible(false);
+  displayGraphs();
+}
+
+function setRepoOverviewActive(isActive) {
+  const btn = document.getElementById("repoOverviewBtn");
+  if (!btn) return;
+  btn.classList.toggle("active", isActive);
+}
+
 function renderContent() {
   const activeUser = localStorage.getItem("username");
   const activeTab = localStorage.getItem("tab");
 
-  if (!activeUser || !activeTab) return;
+  // repo overview mode
+  if (!activeTab) {
+    setRepoOverviewActive(true);
+    setContributorTabsVisible(false);
+    displayGraphs();
+    return;
+  }
 
-  // const contributor = contributors.find(c => c.username === activeUser);
+  // contributor tab selected but somehow no contributor chosen
+  if (!activeUser) {
+    setContributorTabsVisible(false);
+    document.getElementById("stats").innerHTML =
+      "<p>Please select a contributor.</p>";
+    return;
+  }
+
+  setRepoOverviewActive(false);
+  setContributorTabsVisible(true);
 
   switch (activeTab) {
     case "Overview":
@@ -452,9 +494,6 @@ function renderContent() {
     case "Pull Requests":
       initPRList();
       break;
-    case "Repo-Details":
-      renderContributorChart();
-      break;
     default:
       loadOverviewTab();
       break;
@@ -464,7 +503,18 @@ function renderContent() {
 // Tab listeners
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.textContent));
+  const repoOverviewBtn = document.getElementById("repoOverviewBtn");
+  if (repoOverviewBtn) {
+  repoOverviewBtn.addEventListener("click", selectRepoOverview);
+  }
 });
+
+function setContributorTabsVisible(isVisible) {
+  const tabs = document.getElementById("tabs");
+  if (!tabs) return;
+
+  tabs.style.display = isVisible ? "grid" : "none";
+}
 
 // ***********************
 // loading screen

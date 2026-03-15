@@ -795,3 +795,43 @@ body {
   overflow-x: auto;
   max-width: 100%;
 }
+
+#contributorResultsHeading {
+  display: flex;
+  align-items: center;
+  background-color: #25292f;
+  height: 60px;
+  border-radius: 8px;
+}
+
+.repo-overview-btn {
+  background-color: var(--dot-bg);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-family: "Amiko";
+  font-size: 16px;
+  cursor: pointer;
+  /* transform: translateY(-10px); */
+}
+
+.repo-overview-btn.active {
+  background-color: #25292f;
+}
+
+.repo-overview-btn:hover {
+  background-color: #373d46;
+}
+
+.repo-graphs-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.graph-card {
+  background-color: rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  padding: 20px;
+}
