@@ -804,15 +804,19 @@ body {
   border-radius: 8px;
 }
 
+
+
 .repo-overview-btn {
   background-color: var(--dot-bg);
   color: white;
   border: none;
+  border-radius: 8px;
   padding: 12px 18px;
   font-family: "Amiko";
   font-size: 16px;
   cursor: pointer;
-  /* transform: translateY(-10px); */
+  transform: translateY(-1px);
+  height: 60px
 }
 
 .repo-overview-btn.active {
