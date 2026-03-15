@@ -1,5 +1,5 @@
 import "./analytics.js";
-import "./userChart.js";
+import Chart from "chart.js/auto";
 
 function getInsights() {
   return JSON.parse(localStorage.getItem("insights"));
@@ -20,7 +20,7 @@ export async function loadOverviewTab() {
 
   await displayLatestCommit();
   await displayUserName();
-  // renderLanguagesChart();
+  renderLanguagesChart();
 
   // console.log(commitDetails);
   // console.log(localStorage.username);
@@ -121,4 +121,56 @@ async function getGraph(graph_name) {}
 
 async function getCommitsInRange() {}
 
-//Test
+// Test
+let languageChart = null;
+const owner = localStorage.getItem("owner");
+
+function buildLanguageData(languages) {
+  const labels = Object.keys(languages);
+  const data = Object.values(languages);
+
+  return { labels, data };
+}
+
+export function renderLanguagesChart(languages) {
+  const container = document.getElementById("pr-pie-container");
+
+  if (!container) return;
+
+  const { labels, data } = buildLanguageData(insights.languages);
+
+  if (languageChart) {
+    languageChart.destroy();
+  }
+
+  languageChart = new Chart(container, {
+    type: "pie",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Language Usage",
+          data,
+          hoverOffset: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Test",
+        },
+        legend: {
+          display: true,
+          position: "right",
+        },
+      },
+    },
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  renderLanguagesChart();
+});
