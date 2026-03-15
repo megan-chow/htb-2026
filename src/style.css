@@ -342,3 +342,8 @@ body {
 #stats::-webkit-scrollbar {
   display: none;
 }
+
+
+#statsPage::-webkit-scrollbar{
+  color-scheme: ;
+}

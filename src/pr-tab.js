@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", async () =>{
 document.getElementById("showPRsBtn").addEventListener("click", () => {
     const insights = JSON.parse(localStorage.getItem("insights"));
     const prs = insights.pullRequestStats;
+    // replace later with the actual div
     const statsDiv = document.getElementById("stats");
     console.log(prs.length, prs.map(pr => pr.number));
 
@@ -28,3 +29,31 @@ document.getElementById("showPRsBtn").addEventListener("click", () => {
     }).join("");
 
 });
+
+window.showPRDetail = function(pNumber) {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const pr = insights.pullRequestStats.find(p => p.number === pNumber);
+    // replace later with the actual div
+    const statsDiv = document.getElementById("stats");
+
+        statsDiv.innerHTML = `
+        <h2>#${pr.number} ${pr.title}</h2>
+        <p><strong>Author:</strong> <img src="${pr.author.avatar}" width="20" style="border-radius:50%"/> ${pr.author.username}</p>
+        <p><strong>State:</strong> ${pr.state}</p>
+        <p><strong>Branch:</strong> ${pr.sourceBranch} → ${pr.targetBranch}</p>
+        <p><strong>Opened:</strong> ${new Date(pr.created).toLocaleDateString()}</p>
+        <p><strong>Description:</strong> ${pr.description || "None"}</p>
+
+        <h3>Files Changed (${pr.files.length})</h3>
+        ${pr.files.map(f => `<div>${f.filename} +${f.additions} -${f.deletions}</div>`).join("")}
+
+        <h3>Commits (${pr.commits.length})</h3>
+        ${pr.commits.map(c => `<div>${c.sha.slice(0,7)} - ${c.commit.message}</div>`).join("")}
+
+        <h3>Reviews (${pr.reviews.length})</h3>
+        ${pr.reviews.map(r => `<div>${r.user.login}: ${r.state}</div>`).join("") || "No reviews"}
+
+        <h3>Comments (${pr.comments.length})</h3>
+        ${pr.comments.map(c => `<div>${c.user.login}: ${c.body}</div>`).join("") || "No comments"}
+    `;
+}
