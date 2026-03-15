@@ -392,7 +392,11 @@ body {
   padding: 2%;
 }
 
-/* GRID */
+/********************************
+*
+* Overview Grid
+*
+********************************/
 
 #overview-tab-container {
   display: grid;
