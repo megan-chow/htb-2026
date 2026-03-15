@@ -12,16 +12,15 @@ export async function loadOverviewTab() {
   const res = await fetch("/components/overview-tab.html");
   container.innerHTML = await res.text();
 
-  const commit_frequency = document.getElementById("total-commit-container");
-  commit_frequency.innerHTML = "Total Commits: " + (await getTotalCommits());
-
-  const open_pr = document.getElementById("open-pr-container");
-  open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
+  // const open_pr = document.getElementById("open-pr-container");
+  // open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
 
   await displayLatestCommit();
   await displayUserName();
   await renderPRChart();
   await renderAddDeleteChart();
+  await displayTotalCommit();
+  await displayPR();
 
   // console.log(commitDetails);
   // console.log(localStorage.username);
@@ -30,6 +29,23 @@ export async function loadOverviewTab() {
   //console.log("Latest Commit: " + (await displayLatestCommit));
 }
 window.loadOverviewTab = loadOverviewTab;
+
+async function displayTotalCommit() {
+  let total_commit_container = document.getElementById(
+    "total-commit-container",
+  );
+  let totalCommitElement = document.createElement("h2");
+  totalCommitElement.textContent =
+    "Total Commits: " + (await getTotalCommits());
+  total_commit_container.appendChild(totalCommitElement);
+}
+
+async function displayPR() {
+  let open_pr_container = document.getElementById("open-pr-container");
+  let openPRElement = document.createElement("h2");
+  openPRElement.textContent = "Open Pull Requests: " + (await getOpenPRs());
+  open_pr_container.appendChild(openPRElement);
+}
 
 async function displayUserName() {
   let username_container = document.getElementById("username-container");

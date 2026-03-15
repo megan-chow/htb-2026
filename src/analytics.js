@@ -424,7 +424,9 @@ function selectUser(username) {
 
 // LOOK HERE TOO
 function selectTab(tab) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document
+    .querySelectorAll(".tab")
+    .forEach((t) => t.classList.remove("active"));
   document.getElementById(`tab-${tab}`).classList.add("active");
   localStorage.setItem("tab", tab);
   renderContent();
@@ -438,7 +440,6 @@ function renderContent() {
   if (!activeUser || !activeTab) return;
 
   // const contributor = contributors.find(c => c.username === activeUser);
-
 
   switch (activeTab) {
     case "Overview":
