@@ -130,6 +130,8 @@ body {
   margin-right: 2px;
   margin-left: 28px;
   border-radius: var(--borderR);
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #logo {
@@ -323,13 +325,22 @@ body {
 #contributorSelector {
   display: flex;
   flex-direction: column;
-  border: solid #151515 5px;
+  border: solid var(--dot-color) 3px;
   border-radius: var(--borderR);
   height: 100px;
   align-items: left;
   gap: 10px;
   margin-top: 20px;
+  padding: 20px;
   overflow-y: scroll;
+}
+
+#contributorSelector::-webkit-scrollbar {
+  background-color: var(--bg);
+
+}
+#contributorSelector::-webkit-scrollbar-thumb{
+  background: #151515;/* or add it to the track */
 }
 
 #contributorSearch {
@@ -349,13 +360,6 @@ body {
   background-color: var(--dot-bg);
 }
 
-#userBoard::-webkit-scrollbar{
-  width: 5px;
-  height: 8px;
-  background-color: #151515;/* or add it to the track */
+#userBoard::-webkit-scrollbar {
+  display: none;
 }
-
-#userBoard::-webkit-scrollbar-thumb{
-  background: #aaaaaa; 
-}
-
