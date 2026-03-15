@@ -1,4 +1,7 @@
 import "./style.css";
+import { html as diff2html } from "diff2html";
+import "diff2html/bundles/css/diff2html.min.css";
+
 
 export function initPRList() {
     const insights = JSON.parse(localStorage.getItem("insights"));
@@ -28,6 +31,7 @@ export function showPRDetail(pNumber) {
     const statsDiv = document.getElementById("stats");
 
         statsDiv.innerHTML = `
+        <button onclick="initPRList()">← Back</button>
         <h2>#${pr.number} ${pr.title}</h2>
         <p><strong>Author:</strong> <img src="${pr.author.avatar}" width="20" style="border-radius:50%"/> ${pr.author.username}</p>
         <p><strong>State:</strong> ${pr.state}</p>
@@ -47,6 +51,48 @@ export function showPRDetail(pNumber) {
         <h3>Comments (${pr.comments.length})</h3>
         ${pr.comments.map(c => `<div>${c.user.login}: ${c.body}</div>`).join("") || "No comments"}
     `;
+    const fileSelection = document.createElement("div");
+    fileSelection.innerHTML = `<h3>File Diff</h3>`;
+
+    const select = document.createElement("select");
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = `— ${pr.files.length} file${pr.files.length !== 1 ? "s" : ""} changed —`;
+    select.appendChild(placeholder);
+
+    pr.files.forEach((file, i) => {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = file.filename;
+        select.appendChild(opt);
+    });
+
+    const meta = document.createElement("span");
+    meta.innerHTML = `<span class="add">+0</span> <span class="del">-0</span>`;
+
+    const diffContainer = document.createElement("div");
+    diffContainer.className = "diff-container";
+
+    select.addEventListener("change", () => {
+        const file = pr.files[Number(select.value)];
+        if (!file) { diffContainer.innerHTML = ""; return; }
+        meta.innerHTML = `<span class="add">+${file.additions}</span> <span class="del">-${file.deletions}</span>`;
+        if (!file.patch) { diffContainer.innerHTML = "<div>No patch available.</div>"; return; }
+        const fullDiff = `--- a/${file.filename}\n+++ b/${file.filename}\n${file.patch}`;
+        diffContainer.innerHTML = diff2html(fullDiff, {
+            inputFormat: "diff",
+            outputFormat: "line-by-line",
+            drawFileList: false,
+            matching: "lines",
+            colorScheme: "dark"
+        });
+    });
+
+    fileSelection.appendChild(select);
+    fileSelection.appendChild(meta);
+    fileSelection.appendChild(diffContainer);
+    statsDiv.appendChild(fileSelection);
 }
 
 window.showPRDetail = showPRDetail
+window.initPRList = initPRList
