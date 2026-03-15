@@ -1,6 +1,7 @@
 import "./style.css";
 import { loadOverviewTab } from "./overview-tab.js";
 import { renderCommitDetails } from "./commit_details.js";
+import { initPRList } from "./pr-tab.js";
 
 import { Octokit } from "https://esm.sh/octokit?bundle";
 
@@ -440,19 +441,18 @@ function renderContent() {
   switch (activeTab) {
     case "Overview":
       loadOverviewTab();
-      // loadOverview(contributor);
       break;
     case "Commits":
       renderCommitDetails(activeUser);
       break;
     case "Pull Requests":
-      // loadPullRequests(contributor);
+      initPRList();
       break;
     case "Charts":
-      // loadCharts(contributor);
+      // loadCharts();
       break;
     default:
-      // loadOverview(contributor);
+      loadOverviewTab();
       break;
   }
 }
