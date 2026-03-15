@@ -382,6 +382,10 @@ body {
   padding: 2%;
 }
 
+/* .overview-containers * {
+  display: block;
+} */
+
 .total-commit-container,
 .open-pr-container {
   grid-column: 2 / span 1;
