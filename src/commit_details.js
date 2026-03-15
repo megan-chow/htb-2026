@@ -93,7 +93,8 @@ function renderCommitDetails(username) {
         inputFormat: "diff",
         outputFormat: "line-by-line",
         drawFileList: false,
-        matching: "lines"
+        matching: "lines",
+        colorScheme: "dark"
       });
     });
 

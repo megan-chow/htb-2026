@@ -17,18 +17,45 @@ document.getElementById("showPRsBtn").addEventListener("click", () => {
     prs.map((pr) => pr.number),
   );
 
-  statsDiv.innerHTML = prs
-    .map((pr) => {
-      const color =
-        pr.state === "open" ? "#f5a623" : pr.merged ? "#2ecc71" : "#e74c3c";
-      return `
-        <div style="background:${color}; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-            <strong>#${pr.number} ${pr.title}</strong> [${pr.state}]<br/>
-            <img src="${pr.author.avatar}" width="20"/> ${pr.author.username}<br/>
-            Opened: ${new Date(pr.created).toLocaleDateString()}
-            ${pr.labels.length ? `| Labels: ${pr.labels.join(", ")}` : ""}
-        </div>
+    statsDiv.innerHTML = prs.map((pr) => {
+        const color = pr.state === "open" ? "#f5a52350" : pr.merged ? "#2ecc705a" : "#e74d3c64";
+        const border = pr.state === "open" ? "#f5a523" : pr.merged ? "#2ecc70" : "#e74c3c";
+        return `
+            <div onclick="showPRDetail(${pr.number})" style="cursor:pointer; background:${color}; border: 2px solid ${border}; padding: 8px; border-radius: 6px; margin-bottom: 8px;">                
+                <strong>#${pr.number} ${pr.title}</strong> [${pr.state}]<br/>
+                <img src="${pr.author.avatar}" width="20" style="border-radius: 10px"/> ${pr.author.username}<br/>
+                Opened: ${new Date(pr.created).toLocaleDateString()}
+                ${pr.labels.length ? `| Labels: ${pr.labels.join(", ")}` : ""}
+            </div>
     `;
-    })
-    .join("");
+    }).join("");
+
 });
+
+window.showPRDetail = function(pNumber) {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const pr = insights.pullRequestStats.find(p => p.number === pNumber);
+    // replace later with the actual div
+    const statsDiv = document.getElementById("stats");
+
+        statsDiv.innerHTML = `
+        <h2>#${pr.number} ${pr.title}</h2>
+        <p><strong>Author:</strong> <img src="${pr.author.avatar}" width="20" style="border-radius:50%"/> ${pr.author.username}</p>
+        <p><strong>State:</strong> ${pr.state}</p>
+        <p><strong>Branch:</strong> ${pr.sourceBranch} → ${pr.targetBranch}</p>
+        <p><strong>Opened:</strong> ${new Date(pr.created).toLocaleDateString()}</p>
+        <p><strong>Description:</strong> ${pr.description || "None"}</p>
+
+        <h3>Files Changed (${pr.files.length})</h3>
+        ${pr.files.map(f => `<div>${f.filename} +${f.additions} -${f.deletions}</div>`).join("")}
+
+        <h3>Commits (${pr.commits.length})</h3>
+        ${pr.commits.map(c => `<div>${c.sha.slice(0,7)} - ${c.commit.message}</div>`).join("")}
+
+        <h3>Reviews (${pr.reviews.length})</h3>
+        ${pr.reviews.map(r => `<div>${r.user.login}: ${r.state}</div>`).join("") || "No reviews"}
+
+        <h3>Comments (${pr.comments.length})</h3>
+        ${pr.comments.map(c => `<div>${c.user.login}: ${c.body}</div>`).join("") || "No comments"}
+    `;
+}
