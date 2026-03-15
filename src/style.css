@@ -380,3 +380,6 @@ body {
   border: 1px solid var(--dot-color);
   margin: 2%;
 }
+
+.add { color: #2ecc70; }
+.del { color: #e74c3c; }
