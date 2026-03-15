@@ -201,8 +201,9 @@ function renderContributorChart() {
     throw new Error("repoDetails.created_at is missing from insights");
   }
 
-  if (!insights.contributorStats) {
-    throw new Error("contributorStats is missing from insights");
+  if (!Array.isArray(insights.contributorStats) || insights.contributorStats.length === 0) {
+    console.log("contributorStats not ready yet.");
+    return;
   }
 
   const labels = getMonthLabelsForRepo(insights.repoDetails.created_at);
@@ -258,6 +259,8 @@ function renderLanguagesChart(languages) {
 
     if (!container || !insights) return;
 
+  if (!insights.languages || typeof insights.languages !== "object") return;
+
   const { labels, data } = buildLanguageData(insights.languages);
 
   if (languageChart) {
@@ -295,6 +298,8 @@ function renderPRDonutChart(pull) {
   const container = document.getElementById("pr-donut");
 
     if (!container || !insights) return;
+
+  if (!Array.isArray(insights.pullRequestStats)) return;
 
   const counts = buildPRStatusCounts(insights.pullRequestStats);
   const { labels, data } = buildDonutData(counts);
