@@ -380,8 +380,6 @@ body {
 .overview-tab-container {
   border: 1px solid var(--dot-color);
   height: 100vh;
-
-  display: grid !important;
 }
 
 .overview-containers {
@@ -396,6 +394,27 @@ body {
   border: 1px solid #2ecc70;
   background: #2ecc7030;
   color: #2ecc70;
+}
+
+/* AI*/
+#overview-tab-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+  grid-template-rows: auto;
+  gap: 16px;
+  padding: 16px;
+}
+
+#username-container {
+  grid-column: 1 / -1; /* spans full width */
+}
+
+#latest-commit-container {
+  grid-column: 1 / -1; /* spans full width */
+}
+
+#pr-pie-container {
+  grid-column: 1 / -1; /* or just one column if you want it smaller */
 }
 
 /* .overview-containers * {
