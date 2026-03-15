@@ -13,7 +13,9 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   // document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
 
   // Uncomment the following line to render commit details
-  renderCommitDetails(username);
+
+  // Commented out to fix renderCommitDetails flickering before overview is shown
+  // renderCommitDetails(username);
 });
 
 export function renderCommitDetails(username) {
