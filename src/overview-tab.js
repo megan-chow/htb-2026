@@ -12,10 +12,10 @@ export async function loadOverviewTab() {
   const res = await fetch("/components/overview-tab.html");
   container.innerHTML = await res.text();
 
-  const commit_frequency = document.getElementById("total-commit");
+  const commit_frequency = document.getElementById("total-commit-container");
   commit_frequency.innerHTML = "Total Commits: " + (await getTotalCommits());
 
-  const open_pr = document.getElementById("open-pr");
+  const open_pr = document.getElementById("open-pr-container");
   open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
 
   await displayLatestCommit();
@@ -63,7 +63,7 @@ async function displayLatestCommit() {
   let name = localStorage.username;
   let message;
 
-  let latest_commit = document.getElementById("latest-commit");
+  let latest_commit = document.getElementById("latest-commit-container");
   let messageElement = document.createElement("p");
   let date_time;
   let latestCommitDate = document.createElement("p");

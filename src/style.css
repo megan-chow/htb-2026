@@ -366,6 +366,8 @@ body {
 }
 
 .overview-tab-container {
+  display: grid;
+
   grid-template-rows: 10% 25% 10% 25%;
   grid-template-columns: 50% 50%;
 
@@ -374,5 +376,14 @@ body {
 
 .overview-containers {
   border: 1px solid var(--dot-color);
+  border-radius: var(--borderR);
   margin: 2%;
+  padding: 2%;
+}
+
+.total-commit-container,
+.open-pr-container {
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1;
+  display: block;
 }
