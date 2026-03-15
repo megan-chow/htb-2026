@@ -309,9 +309,13 @@ body {
 }
 
 .tab {
-  background-color: var(--dot-bg);
   padding-top: 15px;
   padding-bottom: 30px;
+  background-color: var(--dot-bg);
+}
+
+.tab.active {
+  background-color: var(--bg);
 }
 
 .split {
