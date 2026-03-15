@@ -5,7 +5,7 @@ const insights = JSON.parse(localStorage.getItem("insights"));
 // const insights = localStorage.getItem("insights");
 const commitDetails = insights.commitDetails;
 
-async function loadOverviewTab() {
+export async function loadOverviewTab() {
   const container = document.getElementById("stats");
   if (!container) return;
 
@@ -19,16 +19,20 @@ async function loadOverviewTab() {
   open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
 
   await displayLatestCommit();
-  console.log(commitDetails);
-  console.log(localStorage.username);
+  await displayUserName();
+  // console.log(commitDetails);
+  // console.log(localStorage.username);
   console.log("Commits: " + (await getTotalCommits()));
   console.log("Open PRs: " + (await getOpenPRs()));
   //console.log("Latest Commit: " + (await displayLatestCommit));
 }
 window.loadOverviewTab = loadOverviewTab;
 
-async function getUserName() {
-  return localStorage.username;
+async function displayUserName() {
+  let username_container = document.getElementById("username");
+  let userNameElement = document.createElement("h1");
+  userNameElement.textContent = localStorage.username;
+  username_container.appendChild(userNameElement);
 }
 
 async function getTotalCommits() {
