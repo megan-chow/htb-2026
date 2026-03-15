@@ -303,7 +303,7 @@ body {
 
 #tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr ;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   text-align: center;
   gap: 1px;
@@ -371,16 +371,31 @@ body {
 #userBoard::-webkit-scrollbar-thumb {
   background: #aaaaaa;
 }
+
+/********************************
+*
+* Overview tab
+*
+********************************/
 .overview-tab-container {
   border: 1px solid var(--dot-color);
   height: 100vh;
+
+  display: grid !important;
 }
 
 .overview-containers {
-  border: 1px solid var(--dot-color);
+  border: 1px solid #353b43;
   border-radius: var(--borderR);
+  background: var(--dot-bg);
   margin: 2%;
   padding: 2%;
+}
+
+.overview-containers:hover {
+  border: 1px solid #2ecc70;
+  background: #2ecc7030;
+  color: #2ecc70;
 }
 
 /* .overview-containers * {
@@ -391,7 +406,7 @@ body {
 .open-pr-container {
   grid-column: 2 / span 1;
   grid-row: 1 / span 1;
-  display: block;
+  display: inline-block;
 }
 
 .add {
@@ -424,7 +439,9 @@ body {
   border-radius: 12px;
   margin-bottom: 10px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .pr-card:hover {
@@ -498,7 +515,9 @@ body {
   cursor: pointer;
   font-size: 0.85em;
   font-family: "Amiko";
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   margin-bottom: 16px;
 }
 
