@@ -1,4 +1,5 @@
 import "./analytics.js";
+import "./userChart.js";
 
 // Store GitHub Repo Insights
 const insights = JSON.parse(localStorage.getItem("insights"));
@@ -20,6 +21,8 @@ export async function loadOverviewTab() {
 
   await displayLatestCommit();
   await displayUserName();
+  // renderLanguagesChart();
+
   // console.log(commitDetails);
   // console.log(localStorage.username);
   console.log("Commits: " + (await getTotalCommits()));

@@ -109,7 +109,6 @@ body {
 
 #search {
   grid-column: 2;
-
 }
 
 #userBoard {
@@ -229,7 +228,7 @@ body {
 
 #search > #repoInput {
   background-color: #353b43;
-  color: #AAAAAA;
+  color: #aaaaaa;
   display: inline;
   width: 90%;
   margin: 3px;
@@ -389,16 +388,20 @@ body {
   display: block;
 }
 
-.add { color: #2ecc70; }
-.del { color: #e74c3c; }
+.add {
+  color: #2ecc70;
+}
+.del {
+  color: #e74c3c;
+}
 
-#searchbar #generateBtn{
+#searchbar #generateBtn {
   background: none;
   border: none;
 }
 
-#generateBtn img{
-  height:40px;
-  width:40px;
-  cursor:pointer;
+#generateBtn img {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
 }
