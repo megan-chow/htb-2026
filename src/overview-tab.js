@@ -57,31 +57,34 @@ async function getTotalCommits() {
 
 async function displayLatestCommit() {
   let name = localStorage.username;
-  let message = commitDetails[name][0].message;
-  if (!(commitDetails[name].length < 1)) {
+  let message;
+
+  let latest_commit = document.getElementById("latest-commit");
+  let messageElement = document.createElement("p");
+  let date_time;
+  let latestCommitDate = document.createElement("p");
+  let latestCommitTime = document.createElement("p");
+
+  if (Array.isArray(commitDetails[name]) && !(commitDetails[name].length < 1)) {
+    message = commitDetails[name][0].message;
     console.log(message);
 
-    const latest_commit = document.getElementById("latest-commit");
-    const messageElement = document.createElement("p");
-
     messageElement.textContent = "Message: " + message;
-    latest_commit.appendChild(messageElement);
 
-    console.log("help");
-    let date_time = commitDetails[name][0].date;
+    date_time = commitDetails[name][0].date;
     date_time = date_time.split(/[T,Z]/);
-    console.log(date_time);
 
-    const latestCommitDate = document.createElement("p");
     latestCommitDate.textContent = "Date: " + date_time[0];
-    latest_commit.appendChild(latestCommitDate);
 
-    const latestCommitTime = document.createElement("p");
     latestCommitTime.textContent = "Time: " + date_time[1];
-    latest_commit.appendChild(latestCommitTime);
   } else {
-    document.getElementById("latest-commit");
+    messageElement.textContent = "No recent commits";
+    latestCommitDate.textContent = "-";
+    latestCommitTime.textContent = "-";
   }
+  latest_commit.appendChild(messageElement);
+  latest_commit.appendChild(latestCommitDate);
+  latest_commit.appendChild(latestCommitTime);
 }
 
 async function getOpenPRs() {
