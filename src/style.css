@@ -369,6 +369,13 @@ body {
   background: #aaaaaa;
 }
 
+.overview-tab-container {
+  grid-template-rows: 25% 25% 25%;
+  grid-template-columns: 25% 25% 25%;
+
+  border: 1px solid var(--dot-color);
+}
+
 .overview-containers {
   border: 1px solid var(--dot-color);
   margin: 2%;
