@@ -15,7 +15,7 @@ export function initPRList() {
         const statusColor = pr.state === "open" ? "#f5a523" : pr.merged ? "#2ecc70" : "#e74c3c";
         const statusBg = pr.state === "open" ? "#f5a52330" : pr.merged ? "#2ecc7030" : "#e74c3c30";
         return `
-            <div onclick="showPRDetail(${pr.number})" style="cursor:pointer; background:#202429; border: 2px solid #aaaaaa; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+            <div onclick="showPRDetail(${pr.number})" onmouseenter="this.style.background='#2d3138'" onmouseleave="this.style.background='#202429'" style="cursor:pointer; background:#202429; border: 2px solid #aaaaaa; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
                 <strong>#${pr.number} ${pr.title}</strong>
                 <span style="margin-left:8px; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; background:${statusBg}; color:${statusColor}; border: 1px solid ${statusColor};">● ${statusLabel}</span><br/>
                 <img src="${pr.author.avatar}" width="20" style="border-radius: 10px"/> ${pr.author.username}<br/>
