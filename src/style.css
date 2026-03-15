@@ -182,6 +182,7 @@ body {
 }
 
 #stats {
+  display: grid;
   border-radius: var(--borderR);
   background-color: var(--bg);
   padding: 25px;
