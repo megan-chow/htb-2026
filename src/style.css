@@ -309,10 +309,12 @@ body {
   padding-top: 15px;
   padding-bottom: 30px;
   background-color: var(--dot-bg);
+  cursor: pointer;
 }
 
 .tab.active {
   background-color: var(--bg);
+  cursor: pointer;
 }
 
 .split {

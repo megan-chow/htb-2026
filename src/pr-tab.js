@@ -11,11 +11,13 @@ export function initPRList() {
     console.log(prs.length, prs.map(pr => pr.number));
 
     statsDiv.innerHTML = prs.map((pr) => {
-        const color = pr.state === "open" ? "#f5a52350" : pr.merged ? "#2ecc705a" : "#e74d3c64";
-        const border = pr.state === "open" ? "#f5a523" : pr.merged ? "#2ecc70" : "#e74c3c";
+        const statusLabel = pr.state === "open" ? "Pending Approval" : pr.merged ? "Approved" : "Denied";
+        const statusColor = pr.state === "open" ? "#f5a523" : pr.merged ? "#2ecc70" : "#e74c3c";
+        const statusBg = pr.state === "open" ? "#f5a52330" : pr.merged ? "#2ecc7030" : "#e74c3c30";
         return `
-            <div onclick="showPRDetail(${pr.number})" style="cursor:pointer; background:${color}; border: 2px solid ${border}; padding: 8px; border-radius: 6px; margin-bottom: 8px;">                
-                <strong>#${pr.number} ${pr.title}</strong> [${pr.state}]<br/>
+            <div onclick="showPRDetail(${pr.number})" onmouseenter="this.style.background='#2d3138'" onmouseleave="this.style.background='#202429'" style="cursor:pointer; background:#202429; border: 2px solid #aaaaaa; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                <strong>#${pr.number} ${pr.title}</strong>
+                <span style="margin-left:8px; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; background:${statusBg}; color:${statusColor}; border: 1px solid ${statusColor};">● ${statusLabel}</span><br/>
                 <img src="${pr.author.avatar}" width="20" style="border-radius: 10px"/> ${pr.author.username}<br/>
                 Opened: ${new Date(pr.created).toLocaleDateString()}
                 ${pr.labels.length ? `| Labels: ${pr.labels.join(", ")}` : ""}
