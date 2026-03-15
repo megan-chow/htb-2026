@@ -22,10 +22,47 @@ export function renderCommitDetails(username) {
   const output = document.getElementById("stats");
   output.innerHTML = "";
 
-  commits.slice(0, 20).forEach((commit, commitIndex) => {
+  const allCommits = commits.slice(0, 20);
+  if (allCommits.length === 0) return;
+
+  let currentIndex = 0;
+
+  // Navigation bar
+  const nav = document.createElement("div");
+  nav.className = "commit-nav";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "← Prev";
+  prevBtn.className = "commit-nav-btn";
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Next →";
+  nextBtn.className = "commit-nav-btn";
+
+  const counter = document.createElement("span");
+  counter.className = "commit-nav-counter";
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(counter);
+  nav.appendChild(nextBtn);
+  output.appendChild(nav);
+
+  // Commit block container
+  const blockContainer = document.createElement("div");
+  blockContainer.id = "commit-block-container";
+  output.appendChild(blockContainer);
+
+  function renderCommit(index) {
+    const commit = allCommits[index];
+    blockContainer.innerHTML = "";
+
+    // Update nav state
+    counter.textContent = `${index + 1} / ${allCommits.length}`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === allCommits.length - 1;
+
     const block = document.createElement("div");
     block.className = "commit-block";
-
     block.insertAdjacentHTML(
       "beforeend",
       `
@@ -41,11 +78,11 @@ export function renderCommitDetails(username) {
     selectorRow.className = "file-selector-row";
 
     const label = document.createElement("label");
-    label.textContent = "Changed file";
-    label.htmlFor = `file-sel-${commitIndex}`;
+    label.textContent = "Select file: ";
+    label.htmlFor = `file-sel-${index}`;
 
     const select = document.createElement("select");
-    select.id = `file-sel-${commitIndex}`;
+    select.id = `file-sel-${index}`;
 
     const placeholder = document.createElement("option");
     placeholder.value = "";
@@ -80,17 +117,13 @@ export function renderCommitDetails(username) {
         meta.innerHTML = `<span class="add">+0</span> <span class="del">-0</span>`;
         return;
       }
-
       const file = commit.files[Number(fileIndex)];
       meta.innerHTML = `<span class="add">+${file.additions}</span> <span class="del">-${file.deletions}</span>`;
-
       if (!file.patch) {
         diffContainer.innerHTML = `<div class="no-diff">No patch available.</div>`;
         return;
       }
-
       const fullDiff = `--- a/${file.filename}\n+++ b/${file.filename}\n${file.patch}`;
-
       diffContainer.innerHTML = diff2html(fullDiff, {
         inputFormat: "diff",
         outputFormat: "line-by-line",
@@ -99,7 +132,22 @@ export function renderCommitDetails(username) {
         colorScheme: "dark",
       });
     });
+    // Auto-select first file if available
+    if (commit.files.length > 0) {
+      select.value = 0;
+      select.dispatchEvent(new Event("change"));
+    }
 
-    output.appendChild(block);
+    blockContainer.appendChild(block);
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (currentIndex > 0) renderCommit(--currentIndex);
   });
+
+  nextBtn.addEventListener("click", () => {
+    if (currentIndex < allCommits.length - 1) renderCommit(++currentIndex);
+  });
+
+  renderCommit(0);
 }
