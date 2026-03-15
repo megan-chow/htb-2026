@@ -9,6 +9,7 @@ import Chart from 'chart.js/auto';
 // });
 
 let contributorChart = null;
+let languageChart = null;
 let selectedContributors = new Set();
 let showOther = true;
 const TOP_N = 4;
@@ -85,6 +86,13 @@ function buildDatasets(contributors, labels) {
       tension: 0.3,
     };
   });
+}
+
+function buildLanguageData(languages) {
+    const labels = Object.keys(languages);
+    const data = Object.values(languages);
+
+    return { labels, data};
 }
 
 function getTotalCommits(contributor) {
@@ -217,6 +225,48 @@ function renderContributorChart() {
   });
 }
 
+function renderLanguagesChart(languages) {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const container = document.getElementById("language-pie");
+
+    
+
+
+    if (!container) return;
+
+    const { labels, data} = buildLanguageData(insights.languages);
+
+    if (languageChart) {
+        languageChart.destroy();
+    }
+
+
+    languageChart = new Chart(container, {
+        type: 'pie',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Language Usage',
+                data,
+                hoverOffset: 4,
+            }],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: { 
+                    display: true,
+                    text: `Languages Used: ${owner}/${repo}`,
+                },
+                legend: {
+                    display: true,
+                    position: 'right',
+                },
+            }
+        }
+    });
+}
+
 function renderContributorSelector(allContributors) {
   const container = document.getElementById("contributorSelector");
   const searchInput = document.getElementById("contributorSearch");
@@ -294,12 +344,16 @@ function initializeContributorUI() {
 window.addEventListener("insightsReady", () => {
   initializeContributorUI();
   renderContributorChart();
+  renderLanguagesChart();
 });
 
 window.addEventListener("DOMContentLoaded", () => {
   initializeContributorUI();
   renderContributorChart();
+  renderLanguagesChart();
 });
+
+
 
 
 
