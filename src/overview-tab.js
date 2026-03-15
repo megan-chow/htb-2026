@@ -12,21 +12,12 @@ export async function loadOverviewTab() {
   const res = await fetch("/components/overview-tab.html");
   container.innerHTML = await res.text();
 
-  // const open_pr = document.getElementById("open-pr-container");
-  // open_pr.innerHTML = "Open Pull Requests: " + (await getOpenPRs());
-
   await displayLatestCommit();
   await displayUserName();
   await renderPRChart();
   await renderAddDeleteChart();
   await displayTotalCommit();
   await displayPR();
-
-  // console.log(commitDetails);
-  // console.log(localStorage.username);
-  console.log("Commits: " + (await getTotalCommits()));
-  console.log("Open PRs: " + (await getOpenPRs()));
-  //console.log("Latest Commit: " + (await displayLatestCommit));
 }
 window.loadOverviewTab = loadOverviewTab;
 
@@ -55,28 +46,14 @@ async function displayUserName() {
 }
 
 async function getTotalCommits() {
-  //Use contributors array instead
-
   let name = localStorage.username;
-
-  // const insights = JSON.parse(localStorage.getItem("insights"));
-  // const commitDetails = insights.commitDetails;
-
-  // console.log("1" + insights.contributors.username);
-  // console.log("2" + name);
 
   const insights = getInsights();
   for (let i = 0; i < insights.contributors.length; i++) {
     if (insights.contributors[i].username === name) {
       return insights.contributors[i].commits;
     }
-
-    console.log("Working");
   }
-
-  // if (Array.isArray(commitDetails[name])) {
-  //   return commitDetails[name].length;
-  // }
 }
 
 async function displayLatestCommit() {
@@ -93,8 +70,6 @@ async function displayLatestCommit() {
   const commitDetails = insights?.commitDetails || {};
   if (Array.isArray(commitDetails[name]) && !(commitDetails[name].length < 1)) {
     message = commitDetails[name][0].message;
-    console.log(message);
-
     messageElement.textContent = "Message: " + message;
 
     date_time = commitDetails[name][0].date;
@@ -158,8 +133,6 @@ async function buildPrPieData() {
 
 async function renderPRChart() {
   const pr_container = document.getElementById("pr-pie-container");
-  console.log("pr_container:", pr_container); // is it null?
-  console.log("pr_container tag:", pr_container?.tagName); // is it CANVAS?
 
   if (!pr_container) return;
 
@@ -207,8 +180,6 @@ async function buildAddDeletePieData() {
 
 async function renderAddDeleteChart() {
   const pr_container = document.getElementById("pr-pie-container");
-  console.log("pr_container:", pr_container); // is it null?
-  console.log("pr_container tag:", pr_container?.tagName); // is it CANVAS?
 
   if (!pr_container) return;
 
@@ -245,16 +216,9 @@ async function renderAddDeleteChart() {
   });
 }
 
+//TODO Add additional metrics if there is time
 // function getClosedPR() {}
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   renderLanguagesChart();
-// });
-
 // async function getOpenIssues() {}
-
 // async function getClosedIssues() {}
-
 // async function getGraph(graph_name) {}
-
 // async function getCommitsInRange() {}

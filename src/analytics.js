@@ -329,10 +329,6 @@ async function getAuthors(owner, repo) {
 
   const uniqueAuthors = [...new Set(author)];
 
-  // console.log(res.data);
-  // console.log(author);
-  // console.log(uniqueAuthors);
-
   return uniqueAuthors;
 }
 
@@ -435,7 +431,9 @@ function selectUser(username) {
 }
 
 function selectTab(tab) {
-  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+  document
+    .querySelectorAll(".tab")
+    .forEach((t) => t.classList.remove("active"));
 
   const tabEl = document.getElementById(`tab-${tab}`);
   if (tabEl) {
@@ -449,7 +447,9 @@ function selectTab(tab) {
 
 function selectRepoOverview() {
   localStorage.removeItem("tab");
-  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+  document
+    .querySelectorAll(".tab")
+    .forEach((t) => t.classList.remove("active"));
   setRepoOverviewActive(true);
   setContributorTabsVisible(false);
   displayGraphs();
@@ -505,7 +505,7 @@ document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.textContent));
   const repoOverviewBtn = document.getElementById("repoOverviewBtn");
   if (repoOverviewBtn) {
-  repoOverviewBtn.addEventListener("click", selectRepoOverview);
+    repoOverviewBtn.addEventListener("click", selectRepoOverview);
   }
 });
 
