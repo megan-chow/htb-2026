@@ -316,6 +316,7 @@ body {
   padding-bottom: 30px;
   background-color: var(--dot-bg);
   cursor: pointer;
+  border-radius: 15px 15px 0 0;
 }
 
 .tab.active {
@@ -808,8 +809,6 @@ body {
   border-radius: 8px;
 }
 
-
-
 .repo-overview-btn {
   background-color: var(--dot-bg);
   color: white;
@@ -820,7 +819,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transform: translateY(-1px);
-  height: 60px
+  height: 60px;
 }
 
 .repo-overview-btn.active {
