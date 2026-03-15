@@ -21,7 +21,8 @@ export async function loadOverviewTab() {
 
   await displayLatestCommit();
   await displayUserName();
-  renderLanguagesChart();
+  await renderPRChart();
+  await renderAddDeleteChart();
 
   // console.log(commitDetails);
   // console.log(localStorage.username);
@@ -110,43 +111,52 @@ async function getOpenPRs() {
   return count;
 }
 
-async function getOpenIssues() {}
+async function getClosePRs() {
+  let count = 0;
+  let name = localStorage.username;
+  const prs = insights.pullRequestStats;
 
-async function getClosedIssues() {}
+  for (let i = 0; i < insights.pullRequestStats.length; i++) {
+    if (
+      insights.pullRequestStats[i].state === "closed" &&
+      insights.pullRequestStats[i].author.username === name
+    ) {
+      count++;
+    }
+  }
+  return count;
+}
 
-async function getGraph(graph_name) {}
-
-async function getCommitsInRange() {}
-
-// Test
-let languageChart = null;
+let prChart = null;
 const owner = localStorage.getItem("owner");
 
-function buildLanguageData(languages) {
-  const labels = Object.keys(languages);
-  const data = Object.values(languages);
+async function buildPrPieData() {
+  const labels = ["Closed PRs", "Opened PRs"];
+  const data = [await getClosePRs(), await getOpenPRs()];
 
   return { labels, data };
 }
 
-export function renderLanguagesChart(languages) {
-  const container = document.getElementById("pr-pie-container");
+async function renderPRChart() {
+  const pr_container = document.getElementById("pr-pie-container");
+  console.log("pr_container:", pr_container); // is it null?
+  console.log("pr_container tag:", pr_container?.tagName); // is it CANVAS?
 
-  if (!container) return;
+  if (!pr_container) return;
 
-  const { labels, data } = buildLanguageData(insights.languages);
+  const { labels, data } = await buildPrPieData();
 
-  if (languageChart) {
-    languageChart.destroy();
+  if (prChart) {
+    prChart.destroy();
   }
 
-  languageChart = new Chart(container, {
+  prChart = new Chart(pr_container, {
     type: "pie",
     data: {
       labels,
       datasets: [
         {
-          label: "Language Usage",
+          label: "Pull Requests",
           data,
           hoverOffset: 4,
         },
@@ -157,7 +167,6 @@ export function renderLanguagesChart(languages) {
       plugins: {
         title: {
           display: true,
-          text: "Test",
         },
         legend: {
           display: true,
@@ -168,6 +177,65 @@ export function renderLanguagesChart(languages) {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  renderLanguagesChart();
-});
+let addDeleteChart = null;
+
+async function buildAddDeletePieData() {
+  const labels = ["Deleted Lines", "Added Lines"];
+  const data = [await getClosePRs(), await getOpenPRs()];
+
+  return { labels, data };
+}
+
+async function renderAddDeleteChart() {
+  const pr_container = document.getElementById("pr-pie-container");
+  console.log("pr_container:", pr_container); // is it null?
+  console.log("pr_container tag:", pr_container?.tagName); // is it CANVAS?
+
+  if (!pr_container) return;
+
+  const { labels, data } = await buildPrPieData();
+
+  if (addDeleteChart) {
+    addDeleteChart.destroy();
+  }
+
+  addDeleteChart = new Chart(pr_container, {
+    type: "pie",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Pull Requests",
+          data,
+          hoverOffset: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+        },
+        legend: {
+          display: true,
+          position: "right",
+        },
+      },
+    },
+  });
+}
+
+// function getClosedPR() {}
+
+// window.addEventListener("DOMContentLoaded", () => {
+//   renderLanguagesChart();
+// });
+
+// async function getOpenIssues() {}
+
+// async function getClosedIssues() {}
+
+// async function getGraph(graph_name) {}
+
+// async function getCommitsInRange() {}
