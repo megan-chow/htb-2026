@@ -345,5 +345,16 @@ body {
 
 
 #statsPage::-webkit-scrollbar{
-  color-scheme: ;
+  background-color: var(--dot-bg);
 }
+
+#userBoard::-webkit-scrollbar{
+  width: 5px;
+  height: 8px;
+  background-color: #151515;/* or add it to the track */
+}
+
+#userBoard::-webkit-scrollbar-thumb{
+  background: #aaaaaa; 
+}
+
