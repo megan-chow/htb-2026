@@ -29,9 +29,9 @@ export async function loadOverviewTab() {
 window.loadOverviewTab = loadOverviewTab;
 
 async function displayUserName() {
-  let username_container = document.getElementById("username");
+  let username_container = document.getElementById("username-container");
   let userNameElement = document.createElement("h1");
-  userNameElement.textContent = localStorage.username;
+  userNameElement.textContent = "@" + localStorage.username;
   username_container.appendChild(userNameElement);
 }
 
