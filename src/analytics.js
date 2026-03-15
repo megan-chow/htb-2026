@@ -3,7 +3,7 @@ import { loadOverviewTab } from "./overview-tab.js";
 import { renderCommitDetails } from "./commit_details.js";
 import { initPRList } from "./pr-tab.js";
 
-import { Octokit } from "https://esm.sh/octokit?bundle";
+import { Octokit } from "octokit";
 
 const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node

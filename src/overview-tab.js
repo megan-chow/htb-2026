@@ -1,10 +1,9 @@
 import "./analytics.js";
 import "./userChart.js";
 
-// Store GitHub Repo Insights
-const insights = JSON.parse(localStorage.getItem("insights"));
-// const insights = localStorage.getItem("insights");
-const commitDetails = insights.commitDetails;
+function getInsights() {
+  return JSON.parse(localStorage.getItem("insights"));
+}
 
 export async function loadOverviewTab() {
   const container = document.getElementById("stats");
@@ -49,6 +48,7 @@ async function getTotalCommits() {
   // console.log("1" + insights.contributors.username);
   // console.log("2" + name);
 
+  const insights = getInsights();
   for (let i = 0; i < insights.contributors.length; i++) {
     if (insights.contributors[i].username === name) {
       return insights.contributors[i].commits;
@@ -72,6 +72,8 @@ async function displayLatestCommit() {
   let latestCommitDate = document.createElement("p");
   let latestCommitTime = document.createElement("p");
 
+  const insights = getInsights();
+  const commitDetails = insights?.commitDetails || {};
   if (Array.isArray(commitDetails[name]) && !(commitDetails[name].length < 1)) {
     message = commitDetails[name][0].message;
     console.log(message);
@@ -97,6 +99,7 @@ async function displayLatestCommit() {
 async function getOpenPRs() {
   let count = 0;
   let name = localStorage.username;
+  const insights = getInsights();
   const prs = insights.pullRequestStats;
 
   for (let i = 0; i < insights.pullRequestStats.length; i++) {

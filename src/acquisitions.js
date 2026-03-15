@@ -18,10 +18,9 @@ const TOP_N = 4;
 const unix = 1742083200;
 const date = new Date(unix * 1000);
 
-const owner = localStorage.getItem("owner");
-const repo = localStorage.getItem("repo");
-
-const insights = JSON.parse(localStorage.getItem("insights"));
+function getOwner() { return localStorage.getItem("owner"); }
+function getRepo() { return localStorage.getItem("repo"); }
+function getInsights() { return JSON.parse(localStorage.getItem("insights")); }
 
 // let contributorChart = null;
 
@@ -230,7 +229,7 @@ function renderContributorChart() {
       plugins: {
         title: {
           display: true,
-          text: `Commits by Contributor per Month: ${owner}/${repo}`,
+          text: `Commits by Contributor per Month: ${getOwner()}/${getRepo()}`,
         },
         legend: {
           display: true,
@@ -257,7 +256,7 @@ function renderLanguagesChart(languages) {
   const insights = JSON.parse(localStorage.getItem("insights"));
   const container = document.getElementById("language-pie");
 
-  if (!container) return;
+    if (!container || !insights) return;
 
   const { labels, data } = buildLanguageData(insights.languages);
 
@@ -265,39 +264,37 @@ function renderLanguagesChart(languages) {
     languageChart.destroy();
   }
 
-  languageChart = new Chart(container, {
-    type: "pie",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Language Usage",
-          data,
-          hoverOffset: 4,
+    languageChart = new Chart(container, {
+        type: 'pie',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Language Usage',
+                data,
+                hoverOffset: 4,
+            }],
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: `Languages Used: ${owner}/${repo}`,
-        },
-        legend: {
-          display: true,
-          position: "right",
-        },
-      },
-    },
-  });
+        options: {
+            responsive: true,
+            plugins: {
+                title: { 
+                    display: true,
+                    text: `Languages Used: ${getOwner()}/${getRepo()}`,
+                },
+                legend: {
+                    display: true,
+                    position: 'right',
+                },
+            }
+        }
+    });
 }
 
 function renderPRDonutChart(pull) {
   const insights = JSON.parse(localStorage.getItem("insights"));
   const container = document.getElementById("pr-donut");
 
-  if (!container) return;
+    if (!container || !insights) return;
 
   const counts = buildPRStatusCounts(insights.pullRequestStats);
   const { labels, data } = buildDonutData(counts);
@@ -306,32 +303,35 @@ function renderPRDonutChart(pull) {
     donutChart.destroy();
   }
 
-  donutChart = new Chart(container, {
-    type: "doughnut",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "PR Status",
-          data,
-          hoverOffset: 4,
+    donutChart = new Chart(container, {
+        type: 'doughnut',
+        data: {
+            labels,
+            datasets: [{
+
+                label:'PR Status',
+                data,
+                hoverOffset: 4,
+
+
+            }],
+        
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: `PR Status: ${owner}/${repo}`,
-        },
-      },
-      legend: {
-        display: true,
-        position: "right",
-      },
-    },
-  });
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `PR Status: ${getOwner()}/${getRepo()}`,
+                },
+            },
+            legend: {
+                display: true,
+                position: 'right',
+            },
+        }
+    });
+
 }
 
 function renderContributorSelector(allContributors) {
