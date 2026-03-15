@@ -416,6 +416,41 @@ function initializeContributorUI() {
   }
 }
 
+export function displayGraphs() {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const prs = insights.pullRequestStats;
+        // replace later with the actual div
+    const statsDiv = document.getElementById("stats");
+
+    statsDiv.innerHTML = 
+         `
+        <div style="width: 500px">
+            <canvas id="acquisitions"></canvas>
+
+          <input type="text" id="contributorSearch" placeholder="Search contributors"/>
+          <div id="contributorSelector"></div>
+
+          <label>
+            <input type="checkbox" id="toggleOther" checked/>
+            Show Other
+          </label>
+
+        </div>
+        <div>
+          <div id="test"></div>
+          <div style="width: 500px">
+            <canvas id="language-pie"></canvas>
+
+          </div>
+          <div style="width: 500px">
+            <canvas id="pr-donut"></canvas>
+          </div>
+        </div>
+    `;
+    
+    renderContributorChart();
+}
+
 window.addEventListener("insightsReady", () => {
   initializeContributorUI();
   renderContributorChart();

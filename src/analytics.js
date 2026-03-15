@@ -2,6 +2,7 @@ import "./style.css";
 import { loadOverviewTab } from "./overview-tab.js";
 import { renderCommitDetails } from "./commit_details.js";
 import { initPRList } from "./pr-tab.js";
+import { displayGraphs } from "./acquisitions.js";
 
 import { Octokit } from "https://esm.sh/octokit?bundle";
 
@@ -452,8 +453,8 @@ function renderContent() {
     case "Pull Requests":
       initPRList();
       break;
-    case "Charts":
-      // loadCharts();
+    case "Repo-Details":
+      renderContributorChart();
       break;
     default:
       loadOverviewTab();
