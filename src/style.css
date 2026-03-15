@@ -187,6 +187,7 @@ body {
   padding: 25px;
   margin-top: 10px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #output {
@@ -506,6 +507,7 @@ body {
   align-items: center;
   gap: 12px;
   margin-bottom: 4px;
+  min-width: 0;
 }
 
 .pr-detail-title {
@@ -513,6 +515,10 @@ body {
   font-weight: 700;
   color: #fff;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .pr-detail-meta {
@@ -541,6 +547,9 @@ body {
 .pr-meta-value {
   color: #fff;
   font-size: 0.9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pr-meta-value img {
@@ -600,6 +609,7 @@ body {
   border-radius: 8px;
   margin-bottom: 6px;
   font-size: 0.85em;
+  min-width: 0;
 }
 
 .pr-file-name {
@@ -683,6 +693,8 @@ body {
   font-size: 0.85em;
   line-height: 1.4;
   margin-top: 4px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .pr-empty {
@@ -714,4 +726,9 @@ body {
 .pr-diff-meta {
   margin-bottom: 10px;
   font-size: 0.85em;
+}
+
+.diff-container {
+  overflow-x: auto;
+  max-width: 100%;
 }
