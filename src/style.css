@@ -299,7 +299,7 @@ body {
 
 #tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr ;
   grid-template-rows: 1fr;
   text-align: center;
   gap: 1px;
@@ -367,14 +367,9 @@ body {
 #userBoard::-webkit-scrollbar-thumb {
   background: #aaaaaa;
 }
-
 .overview-tab-container {
-  display: grid;
-
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-
   border: 1px solid var(--dot-color);
+  height: 100vh;
 }
 
 .overview-containers {

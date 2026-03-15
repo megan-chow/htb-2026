@@ -452,9 +452,6 @@ function renderContent() {
     case "Pull Requests":
       initPRList();
       break;
-    case "Charts":
-      // loadCharts();
-      break;
     default:
       loadOverviewTab();
       break;
