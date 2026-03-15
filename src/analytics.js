@@ -411,7 +411,6 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   selectUser(username);
 });
 
-
 // *******
 // Tabs
 // *******
@@ -458,7 +457,7 @@ function renderContent() {
 }
 
 // Tab listeners
-document.querySelectorAll(".tab").forEach(tab => {
+document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.textContent));
 });
 
