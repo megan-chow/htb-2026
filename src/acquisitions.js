@@ -20,8 +20,6 @@ const date = new Date(unix * 1000);
 const owner = localStorage.getItem("owner");
 const repo = localStorage.getItem("repo");
 
-const insights = JSON.parse(localStorage.getItem("insights"));
-
 // let contributorChart = null;
 
 function monthLabelFromUnix(unix) {
@@ -226,13 +224,11 @@ function renderContributorChart() {
 }
 
 function renderLanguagesChart(languages) {
-    const insights = JSON.parse(localStorage.getItem("insights"));
+    const insights = JSON.parse(localStorage.getItem("insights") || "{}");
     const container = document.getElementById("language-pie");
 
-    
-
-
     if (!container) return;
+    if (!insights.languages) return;
 
     const { labels, data} = buildLanguageData(insights.languages);
 
