@@ -1,11 +1,12 @@
 import "./style.css";
 import { loadOverviewTab } from "./overview-tab.js";
 import { renderCommitDetails } from "./commit_details.js";
-import { Octokit } from "https://esm.sh/octokit?bundle";
 
-const octokit = new Octokit({
-  auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
-});
+async function githubAPI(path) {
+  const res = await fetch(`/api/github?path=${encodeURIComponent(path)}`);
+  if (!res.ok) throw new Error(`GitHub API error: ${res.status} on ${path}`);
+  return res.json();
+}
 
 window.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
@@ -103,13 +104,9 @@ async function generateInsights(owner, repo) {
 
 async function getContributors(owner, repo) {
   console.log("getContributors");
-  const res = await octokit.request("GET /repos/{owner}/{repo}/contributors", {
-    owner,
-    repo,
-  });
-
+  const data = await githubAPI(`/repos/${owner}/${repo}/contributors`);
   console.log("getContributors done");
-  return res.data.map((c) => ({
+  return data.map((c) => ({
     username: c.login,
     avatar: c.avatar_url,
     url: c.html_url,
@@ -120,61 +117,28 @@ export { getContributors };
 
 async function getCommitActivity(owner, repo) {
   console.log("getcommitactivity")
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/stats/commit_activity",
-    { owner, repo },
-  );
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/stats/commit_activity`);
 }
 
 async function getContributorStats(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/stats/contributors",
-    { owner, repo }
-  );
-
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/stats/contributors`);
 }
 
 async function getRepoDetails(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}",
-    { owner, repo, }
-  );
-  
-  return ({
-    created_at: res.data.created_at,
-  });
+  const data = await githubAPI(`/repos/${owner}/${repo}`);
+  return { created_at: data.created_at };
 }
 
 async function getLanguages(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/languages",
-    { owner, repo, }
-  );
-
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/languages`);
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
-    owner,
-    repo,
-    per_page: limit,
-    per_page: limit,
-  });
-
-  return res.data; // array of commits
+  return githubAPI(`/repos/${owner}/${repo}/commits?per_page=${limit}`);
 }
 
 async function getCommitDetails(owner, repo, sha) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/commits/{sha}", {
-    owner,
-    repo,
-    sha,
-  });
-
-  return res.data; // includes files[], patch, additions, deletions
+  return githubAPI(`/repos/${owner}/${repo}/commits/${sha}`);
 }
 
 async function getContributorChanges(owner, repo) {
@@ -243,13 +207,8 @@ async function getContributorChanges(owner, repo) {
 
 
 async function getPullRequests(owner, repo) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
-    owner,
-    repo,
-    state: "all",
-    per_page: 10,
-  });
-  return Promise.all(res.data.map(async(pr) => ({
+  const res = await githubAPI(`/repos/${owner}/${repo}/pulls?state=all&per_page=10`);
+  return Promise.all(res.map(async(pr) => ({
     number: pr.number,
     title: pr.title,
     state: pr.state,
@@ -277,14 +236,8 @@ async function getPullRequests(owner, repo) {
 }
 
 async function getIssues(owner, repo) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/issues", {
-    owner,
-    repo,
-    state: "closed",
-    per_page: 50,
-  });
-
-  return res.data.map((issue) => ({
+  const res = await githubAPI(`/repos/${owner}/${repo}/issues?state=closed&per_page=50`);
+  return res.map((issue) => ({
     number: issue.number,
     created: issue.created_at,
     closed: issue.closed_at,
@@ -294,13 +247,9 @@ async function getIssues(owner, repo) {
 }
 
 async function getAuthors(owner, repo) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/commits", {
-    owner,
-    repo,
-  });
-
+  const res = await githubAPI(`/repos/${owner}/${repo}/commits`);
   let author = [];
-  res.data.forEach((commit) => {
+  res.forEach((commit) => {
     author.push(commit.commit.author.name);
   });
 
@@ -314,39 +263,19 @@ async function getAuthors(owner, repo) {
 }
 
 async function getFilesChangedInPR(owner, repo, pull_number) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
-    owner,
-    repo,
-    pull_number,
-  });
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/pulls/${pull_number}/files`);
 }
 
 async function getReviews(owner, repo, pull_number) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", {
-    owner,
-    repo,
-    pull_number,
-  });
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/pulls/${pull_number}/reviews`);
 }
 
 async function getPRCommits(owner, repo, pull_number) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", {
-    owner,
-    repo,
-    pull_number,
-  });
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/pulls/${pull_number}/commits`);
 }
 
 async function getComments(owner, repo, pull_number) {
-  const res = await octokit.request("GET /repos/{owner}/{repo}/issues/{issue_number}/comments", {
-    owner,
-    repo,
-    issue_number: pull_number,
-  });
-  return res.data;
+  return githubAPI(`/repos/${owner}/${repo}/issues/${pull_number}/comments`);
 }
 
 function renderContributors(contributors) {
