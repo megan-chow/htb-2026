@@ -184,12 +184,33 @@ body {
 
 #stats {
   display: grid;
+  align-content: start;
   border-radius: var(--borderR);
   background-color: var(--bg);
   padding: 25px;
   margin-top: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.commit-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.commit-nav-btn {
+  background: var(--dot-bg);
+  color: var(--dot-color);
+  border: 1px solid #353b43;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: "Amiko";
+  font-size: 0.85em;
+  width: 100%;
+  max-width: 96px;
+
 }
 
 #output {
@@ -772,7 +793,7 @@ body {
 }
 
 /* File diff selector */
-.pr-diff-section select {
+.pr-diff-section select, .file-selector-row select {
   background: var(--dot-bg);
   color: var(--dot-color);
   border: 1px solid #353b43;
