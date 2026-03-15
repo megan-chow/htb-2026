@@ -9,24 +9,22 @@
   <title>GitHub Insights</title>
 </head>
 
-  <body class="page">
-    <div id="loading-overlay">
-      <div id="wrap"></div>
-      <h1 class="info">Loading...</h1>
-    </div>
+<body class="page">
+  <div id="loading-overlay">
+    <div id="wrap"></div>
+    <h1 class="info">Loading...</h1>
+  </div>
 
   <header class="header">
     <div id="logo">
       <a href="index.html">
-      <img src="public/mahv.png" style="height:120px; width:220px;">
-      <img/>
+        <img src="public/mahv.png" style="height:120px; width:220px; filter:opacity(80%);"><img />
       </a>
     </div>
     <div id="searchbar">
       <img src="./gitico.png" />
       <div id="search">
-        <input id="repoInput" placeholder="Enter GitHub repository URL"
-          value="https://github.com/sdv-dev/SDGym" />
+        <input id="repoInput" placeholder="Enter GitHub repository URL" value="https://github.com/sdv-dev/SDGym" />
         <button id="generateBtn">%</button>
         <pre id="output" style="display: none"></pre>
       </div>
@@ -34,12 +32,13 @@
   </header>
 
   <main id="main">
-    <div id="userBoard">
-      <div class="userTabslist">
-        Loading...
+    <div id="board-Wrapper">
+      <div id="userBoard">
+        <div class="userTabslist">
+          Loading...
+        </div>
       </div>
     </div>
-
     <div id="statsPage">
       <div class="split">
         <div id="contributorResultsHeading">
@@ -58,10 +57,10 @@
         ACTUAL STATS
         <div style="width: 500px">
           <canvas id="acquisitions"></canvas>
-          
+
           <input type="text" id="contributorSearch" placeholder="Search contributors" />
           <div id="contributorSelector"></div>
-          
+
           <label>
             <input type="checkbox" id="toggleOther" checked />
             Show Other
@@ -76,23 +75,25 @@
           <div id="test"></div>
         </div>
       </div>
-      <!-- <div id="tempButtons">
+    </div>
+    <!-- <div id="tempButtons">
         <input
           id="overviewButton"
           type="button"
           value="Overview"
           onclick="loadOverviewTab()"
         /> -->
-      </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- <pre id="output" style="display: none"></pre> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
-    <script type="module" src="/src/analytics.js"></script>
-    <script type="module" src="/src/acquisitions.js"></script>
-    <script type="module" src="/src/overview-tab.js"></script>
-  </body>
-      </div> 
-    </main>
+  <!-- <pre id="output" style="display: none"></pre> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
+  <script type="module" src="/src/analytics.js"></script>
+  <script type="module" src="/src/acquisitions.js"></script>
+  <script type="module" src="/src/overview-tab.js"></script>
 </body>
+</div>
+</main>
+</body>
+
 </html>

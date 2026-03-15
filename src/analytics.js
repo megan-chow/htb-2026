@@ -447,7 +447,7 @@ function hideLoader() {
 			}
 		))(), 200, 1.1, 2, true),
 		new THREE.MeshBasicMaterial({
-			color: 0xffffff
+			color: 0xAAAAAA
 			// , wireframe: true
 		})
 	);
