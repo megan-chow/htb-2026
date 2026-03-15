@@ -1,4 +1,5 @@
 import "./style.css";
+// Random
 
 document.getElementById("generateBtn").addEventListener("click", async () => {
   const url = document.getElementById("repoInput").value.trim();
