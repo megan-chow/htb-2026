@@ -426,8 +426,6 @@ function selectUser(username) {
 function selectTab(tab) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.getElementById(`tab-${tab}`).classList.add("active");
-
-  renderContent();
   localStorage.setItem("tab", tab);
   renderContent();
 }
