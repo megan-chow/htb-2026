@@ -4,7 +4,7 @@ import { renderCommitDetails } from "./commit_details.js";
 import { initPRList } from "./pr-tab.js";
 import { displayGraphs } from "./acquisitions.js";
 
-import { Octokit } from "https://esm.sh/octokit?bundle";
+import { Octokit } from "octokit";
 
 const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
@@ -425,10 +425,10 @@ function selectUser(username) {
 
 // LOOK HERE TOO
 function selectTab(tab) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document
+    .querySelectorAll(".tab")
+    .forEach((t) => t.classList.remove("active"));
   document.getElementById(`tab-${tab}`).classList.add("active");
-
-  renderContent();
   localStorage.setItem("tab", tab);
   renderContent();
 }
@@ -441,7 +441,6 @@ function renderContent() {
   if (!activeUser || !activeTab) return;
 
   // const contributor = contributors.find(c => c.username === activeUser);
-
 
   switch (activeTab) {
     case "Overview":
