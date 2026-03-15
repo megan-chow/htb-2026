@@ -1,8 +1,8 @@
-import { html as diff2html } from 'diff2html';
+import { html as diff2html } from "diff2html";
 import "diff2html/bundles/css/diff2html.min.css";
 
 // Listener for contributor selector
-document.querySelector(".userTabslist").addEventListener("click", e => {
+document.querySelector(".userTabslist").addEventListener("click", (e) => {
   const contributor = e.target.closest(".contributor");
   if (!contributor) return;
 
@@ -10,7 +10,7 @@ document.querySelector(".userTabslist").addEventListener("click", e => {
   // console.log("Clicked contributor:", username);
 
   // Do stuff
-  document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
+  // document.getElementById("contributorResultsHeading").textContent = "Analytics for contributer " + username;
 
   // Uncomment the following line to render commit details
   renderCommitDetails(username);
@@ -26,12 +26,15 @@ export function renderCommitDetails(username) {
     const block = document.createElement("div");
     block.className = "commit-block";
 
-    block.insertAdjacentHTML("beforeend", `
+    block.insertAdjacentHTML(
+      "beforeend",
+      `
       <div class="commit-header">
         <strong>${commit.sha.slice(0, 7)}</strong> — ${commit.message}
         <br><small>${new Date(commit.date).toLocaleString()}</small>
       </div>
-    `);
+    `,
+    );
 
     // File selector row
     const selectorRow = document.createElement("div");
@@ -46,8 +49,7 @@ export function renderCommitDetails(username) {
 
     const placeholder = document.createElement("option");
     placeholder.value = "";
-    placeholder.textContent =
-      `— ${commit.files.length} file${commit.files.length !== 1 ? "s" : ""} changed —`;
+    placeholder.textContent = `— ${commit.files.length} file${commit.files.length !== 1 ? "s" : ""} changed —`;
     select.appendChild(placeholder);
 
     commit.files.forEach((file, fileIndex) => {
@@ -94,7 +96,7 @@ export function renderCommitDetails(username) {
         outputFormat: "line-by-line",
         drawFileList: false,
         matching: "lines",
-        colorScheme: "dark"
+        colorScheme: "dark",
       });
     });
 
