@@ -18,10 +18,9 @@ const TOP_N = 4;
 const unix = 1742083200;
 const date = new Date(unix * 1000);
 
-const owner = localStorage.getItem("owner");
-const repo = localStorage.getItem("repo");
-
-const insights = JSON.parse(localStorage.getItem("insights"));
+function getOwner() { return localStorage.getItem("owner"); }
+function getRepo() { return localStorage.getItem("repo"); }
+function getInsights() { return JSON.parse(localStorage.getItem("insights")); }
 
 // let contributorChart = null;
 
@@ -231,7 +230,7 @@ function renderContributorChart() {
       plugins: {
         title: {
           display: true,
-          text: `Commits by Contributor per Month: ${owner}/${repo}`,
+          text: `Commits by Contributor per Month: ${getOwner()}/${getRepo()}`,
         },
         legend: {
           display: true,
@@ -261,7 +260,7 @@ function renderLanguagesChart(languages) {
     
 
 
-    if (!container) return;
+    if (!container || !insights) return;
 
     const { labels, data} = buildLanguageData(insights.languages);
 
@@ -285,7 +284,7 @@ function renderLanguagesChart(languages) {
             plugins: {
                 title: { 
                     display: true,
-                    text: `Languages Used: ${owner}/${repo}`,
+                    text: `Languages Used: ${getOwner()}/${getRepo()}`,
                 },
                 legend: {
                     display: true,
@@ -300,7 +299,7 @@ function renderPRDonutChart(pull) {
     const insights = JSON.parse(localStorage.getItem("insights"));
     const container = document.getElementById("pr-donut");
 
-    if (!container) return;
+    if (!container || !insights) return;
 
     const counts = buildPRStatusCounts(insights.pullRequestStats);
     const { labels, data} = buildDonutData(counts);
@@ -330,7 +329,7 @@ function renderPRDonutChart(pull) {
             plugins: {
                 title: {
                     display: true,
-                    text: `PR Status: ${owner}/${repo}`,
+                    text: `PR Status: ${getOwner()}/${getRepo()}`,
                 },
             },
             legend: {
