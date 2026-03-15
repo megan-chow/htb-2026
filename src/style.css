@@ -98,22 +98,18 @@ body {
   grid-row: 1;
   grid-column: 2;
   display: grid;
-  grid-template-columns: 5% 95%;
+  grid-template-columns: 5% 1000px 40px;
   align-content: center;
   align-items: center;
-  color: white;
   border: 4px var(--bg) outset;
   border-radius: var(--borderR);
 
   background-color: var(--bg);
 }
 
-#searchbar img {
-  grid-column: 1;
-}
-
 #search {
   grid-column: 2;
+
 }
 
 #userBoard {
@@ -233,6 +229,7 @@ body {
 
 #search > #repoInput {
   background-color: #353b43;
+  color: #AAAAAA;
   display: inline;
   width: 90%;
   margin: 3px;
@@ -372,16 +369,38 @@ body {
 }
 
 .overview-tab-container {
-  grid-template-rows: 25% 25% 25%;
-  grid-template-columns: 25% 25% 25%;
+  display: grid;
+
+  grid-template-rows: 10% 25% 10% 25%;
+  grid-template-columns: 50% 50%;
 
   border: 1px solid var(--dot-color);
 }
 
 .overview-containers {
   border: 1px solid var(--dot-color);
+  border-radius: var(--borderR);
   margin: 2%;
+  padding: 2%;
+}
+
+.total-commit-container,
+.open-pr-container {
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1;
+  display: block;
 }
 
 .add { color: #2ecc70; }
 .del { color: #e74c3c; }
+
+#searchbar #generateBtn{
+  background: none;
+  border: none;
+}
+
+#generateBtn img{
+  height:40px;
+  width:40px;
+  cursor:pointer;
+}
