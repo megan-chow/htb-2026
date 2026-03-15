@@ -470,6 +470,80 @@ $body.addEventListener('mousedown', start, false);
 $body.addEventListener('touchstart', start, false);
 $body.addEventListener('mouseup', back, false);
 $body.addEventListener('touchend', back, false);
+	scene = new THREE.Scene();
+	// scene.add(new THREE.AxisHelper(30));
+	scene.add(group);
+
+	mesh = new THREE.Mesh(
+		new THREE.TubeGeometry(new (THREE.Curve.create(function() {},
+			function(percent) {
+
+				var x = length*Math.sin(pi2*percent),
+					y = radius*Math.cos(pi2*3*percent),
+					z, t;
+
+				t = percent%0.25/0.25;
+				t = percent%0.25-(2*(1-t)*t* -0.0185 +t*t*0.25);
+				if (Math.floor(percent/0.25) == 0 || Math.floor(percent/0.25) == 2) {
+					t *= -1;
+				}
+				z = radius*Math.sin(pi2*2* (percent-t));
+
+				return new THREE.Vector3(x, y, z);
+
+			}
+		))(), 200, 1.1, 2, true),
+		new THREE.MeshBasicMaterial({
+			color: 0xAAAAAA
+			// , wireframe: true
+		})
+	);
+	group.add(mesh);
+
+	ringcover = new THREE.Mesh(new THREE.PlaneGeometry(50, 15, 1), new THREE.MeshBasicMaterial({color: 0x202429, opacity: 0, transparent: true}));
+	ringcover.position.x = length+1;
+	ringcover.rotation.y = Math.PI/2;
+	group.add(ringcover);
+
+	ring = new THREE.Mesh(new THREE.RingGeometry(4.3, 5.55, 32), new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0, transparent: true}));
+	ring.position.x = length+1.1;
+	ring.rotation.y = Math.PI/2;
+	group.add(ring);
+
+	// fake shadow
+	(function() {
+		var plain, i;
+		for (i = 0; i < 10; i++) {
+			plain = new THREE.Mesh(new THREE.PlaneGeometry(length*2+1, radius*3, 1), new THREE.MeshBasicMaterial({color: 0x202429, transparent: true, opacity: 0.13}));
+			plain.position.z = -2.5+i*0.5;
+			group.add(plain);
+		}
+	})();
+
+	renderer = new THREE.WebGLRenderer({
+		antialias: true
+	});
+	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.setSize(canvassize, canvassize);
+	renderer.setClearColor('#202429');
+
+	$wrap.appendChild(renderer.domElement);
+
+	$body.addEventListener('mousedown', start, false);
+	$body.addEventListener('touchstart', start, false);
+	$body.addEventListener('mouseup', back, false);
+	$body.addEventListener('touchend', back, false);
+
+	animate();
+
+
+	function start() {
+		toend = true;
+	}
+	
+	function back() {
+		toend = false;
+	}
 
 animate();
 
