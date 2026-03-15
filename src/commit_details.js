@@ -139,8 +139,6 @@ export function renderCommitDetails(username) {
     }
 
     blockContainer.appendChild(block);
-
-    blockContainer.appendChild(block);
   }
 
   prevBtn.addEventListener("click", () => {

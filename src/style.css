@@ -97,11 +97,12 @@ body {
 #searchbar {
   margin-top: 9px;
   margin-right: 25px;
+  padding: 0 10px;
   /* margin-bottom:50px; */
   grid-row: 1;
   grid-column: 2;
   display: grid;
-  grid-template-columns: 5% 1000px 40px;
+  grid-template-columns: 5% 90% 5%;
   align-content: center;
   align-items: center;
   border: 4px var(--bg) outset;
@@ -235,7 +236,7 @@ body {
   background-color: #353b43;
   color: #aaaaaa;
   display: inline;
-  width: 90%;
+  width: 95%;
   margin: 3px;
   margin-top: 4px;
   margin-left: 0px;
@@ -250,6 +251,7 @@ body {
 }
 
 #search > #generateBtn {
+  grid-column: 3;
   height: 40px;
 }
 
