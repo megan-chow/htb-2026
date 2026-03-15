@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="./src/style.css" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>GitHub Insights</title>
-  </head>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="./src/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiko:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>GitHub Insights</title>
+</head>
 
   <body class="page">
     <div id="loading-overlay">
@@ -14,7 +16,12 @@
     </div>
 
   <header class="header">
-    <div id="logo">LOGOPLACEHOLDER</div>
+    <div id="logo">
+      <a href="index.html">
+      <img src="public/mahv.png" style="height:120px; width:220px;">
+      <img/>
+      </a>
+    </div>
     <div id="searchbar">
       <img src="./gitico.png" />
       <div id="search">
@@ -32,8 +39,21 @@
         Loading...
       </div>
     </div>
+
     <div id="statsPage">
-      <div id="contributorResultsHeading">Select a contributor</div>
+      <div class="split">
+        <div id="contributorResultsHeading">
+          <p>Select a contributor</p>
+        </div>
+        <div id="tabs">
+          <div class="tab">CHUD</div>
+          <div class="tab">CHUD</div>
+          <div class="tab">CHUD</div>
+          <div class="tab">CHUD</div>
+          <div class="tab">CHUD</div>
+        </div>
+      </div>
+
       <div id="stats">
         ACTUAL STATS
         <div style="width: 500px">
@@ -56,13 +76,13 @@
           <div id="test"></div>
         </div>
       </div>
-      <div id="tempButtons">
+      <!-- <div id="tempButtons">
         <input
           id="overviewButton"
           type="button"
           value="Overview"
           onclick="loadOverviewTab()"
-        />
+        /> -->
       </div>
     </main>
 
