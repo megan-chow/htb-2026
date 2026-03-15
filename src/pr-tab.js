@@ -28,6 +28,7 @@ export function showPRDetail(pNumber) {
     const statsDiv = document.getElementById("stats");
 
         statsDiv.innerHTML = `
+        <button onclick="initPRList()">← Back</button>
         <h2>#${pr.number} ${pr.title}</h2>
         <p><strong>Author:</strong> <img src="${pr.author.avatar}" width="20" style="border-radius:50%"/> ${pr.author.username}</p>
         <p><strong>State:</strong> ${pr.state}</p>
@@ -50,3 +51,4 @@ export function showPRDetail(pNumber) {
 }
 
 window.showPRDetail = showPRDetail
+window.initPRList = initPRList
