@@ -1,21 +1,11 @@
 import "./style.css";
-window.addEventListener("DOMContentLoaded", async () => {
-  // search URL
-  const params = new URLSearchParams(window.location.search);
-  // gets owner of repo
-  const owner = params.get("owner");
-  // get repo
-  const repo = params.get("repo");
-});
 
-document.getElementById("showPRsBtn").addEventListener("click", () => {
-  const insights = JSON.parse(localStorage.getItem("insights"));
-  const prs = insights.pullRequestStats;
-  const statsDiv = document.getElementById("stats");
-  console.log(
-    prs.length,
-    prs.map((pr) => pr.number),
-  );
+export function initPRList() {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const prs = insights.pullRequestStats;
+        // replace later with the actual div
+    const statsDiv = document.getElementById("stats");
+    console.log(prs.length, prs.map(pr => pr.number));
 
     statsDiv.innerHTML = prs.map((pr) => {
         const color = pr.state === "open" ? "#f5a52350" : pr.merged ? "#2ecc705a" : "#e74d3c64";
@@ -29,10 +19,9 @@ document.getElementById("showPRsBtn").addEventListener("click", () => {
             </div>
     `;
     }).join("");
+}
 
-});
-
-window.showPRDetail = function(pNumber) {
+export function showPRDetail(pNumber) {
     const insights = JSON.parse(localStorage.getItem("insights"));
     const pr = insights.pullRequestStats.find(p => p.number === pNumber);
     // replace later with the actual div
@@ -59,3 +48,5 @@ window.showPRDetail = function(pNumber) {
         ${pr.comments.map(c => `<div>${c.user.login}: ${c.body}</div>`).join("") || "No comments"}
     `;
 }
+
+window.showPRDetail = showPRDetail
