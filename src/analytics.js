@@ -70,11 +70,12 @@ function parseRepoUrl(url) {
 }
 
 async function generateInsights(owner, repo) {
-  const [contributors, contributorStats, repoDetails, commits, commitDetails, pulls, issues, authors] =
+  const [contributors, contributorStats, repoDetails, languages, commits, commitDetails, pulls, issues, authors] =
     await Promise.all([
       getContributors(owner, repo),
       getContributorStats(owner,repo),
       getRepoDetails(owner, repo),
+      getLanguages(owner, repo),
       getCommitActivity(owner, repo),
       getContributorChanges(owner, repo),
       getPullRequests(owner, repo),
@@ -89,6 +90,7 @@ async function generateInsights(owner, repo) {
     contributors: contributors,
     contributorStats: contributorStats,
     repoDetails: repoDetails,
+    languages: languages,
     commitFrequency: commits,
     commitDetails: commitDetails,
     pullRequestStats: pulls,
@@ -141,6 +143,15 @@ async function getRepoDetails(owner, repo) {
   return ({
     created_at: res.data.created_at,
   });
+}
+
+async function getLanguages(owner, repo) {
+  const res = await octokit.request(
+    "GET /repos/{owner}/{repo}/languages",
+    { owner, repo, }
+  );
+
+  return res.data;
 }
 
 async function getRecentCommits(owner, repo, limit = 20) {

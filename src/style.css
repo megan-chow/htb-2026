@@ -336,7 +336,8 @@ body {
 
   background-color: #151515 ;
   color: white;
-  border: var(--prim) solid 0px;
+  border: var(--prim) solid 10px;
+  border-radius: var(--borderR);
 }
 
 #stats::-webkit-scrollbar {
