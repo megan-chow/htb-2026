@@ -59,7 +59,7 @@ async function getTotalCommits() {
 async function displayLatestCommit() {
   let name = localStorage.username;
   let message;
-
+  
   let latest_commit = document.getElementById("latest-commit-container");
   let messageElement = document.createElement("p");
   let date_time;
@@ -108,6 +108,7 @@ async function getOpenPRs() {
 async function getClosePRs() {
   let count = 0;
   let name = localStorage.username;
+  const insights = getInsights();
   const prs = insights.pullRequestStats;
 
   for (let i = 0; i < insights.pullRequestStats.length; i++) {
