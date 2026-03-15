@@ -1,4 +1,5 @@
 import "./analytics.js";
+import "./userChart.js";
 
 function getInsights() {
   return JSON.parse(localStorage.getItem("insights"));
@@ -19,6 +20,8 @@ export async function loadOverviewTab() {
 
   await displayLatestCommit();
   await displayUserName();
+  // renderLanguagesChart();
+
   // console.log(commitDetails);
   // console.log(localStorage.username);
   console.log("Commits: " + (await getTotalCommits()));

@@ -1,6 +1,6 @@
 // import { Octokit } from "https://esm.sh/octokit?bundle";
 
-import Chart from 'chart.js/auto';
+import Chart from "chart.js/auto";
 
 // import {getContributorStats, getRepoDetails} from "./analytics.js";
 
@@ -59,7 +59,7 @@ function getMonthLabelsForRepo(createdAt) {
       current.toLocaleDateString("en-US", {
         month: "short",
         year: "numeric",
-      })
+      }),
     );
 
     current.setMonth(current.getMonth() + 1);
@@ -70,7 +70,9 @@ function getMonthLabelsForRepo(createdAt) {
 
 function buildDatasets(contributors, labels) {
   return contributors.map((contributor) => {
-    const monthlyCommits = Object.fromEntries(labels.map(label => [label, 0]));
+    const monthlyCommits = Object.fromEntries(
+      labels.map((label) => [label, 0]),
+    );
 
     for (const week of contributor.weeks) {
       const label = monthLabelFromUnix(week.w);
@@ -82,17 +84,17 @@ function buildDatasets(contributors, labels) {
 
     return {
       label: contributor.author?.login || "Unknown",
-      data: labels.map(label => monthlyCommits[label]),
+      data: labels.map((label) => monthlyCommits[label]),
       tension: 0.3,
     };
   });
 }
 
 function buildLanguageData(languages) {
-    const labels = Object.keys(languages);
-    const data = Object.values(languages);
+  const labels = Object.keys(languages);
+  const data = Object.values(languages);
 
-    return { labels, data};
+  return { labels, data };
 }
 
 function buildPRStatusCounts(pullRequests) {
@@ -122,14 +124,13 @@ function buildDonutData(counts) {
   };
 }
 
-
 function getTotalCommits(contributor) {
   return contributor.weeks.reduce((sum, week) => sum + week.c, 0);
 }
 
 function sortContributorsByTotal(contributors) {
   return [...contributors].sort(
-    (a, b) => getTotalCommits(b) - getTotalCommits(a)
+    (a, b) => getTotalCommits(b) - getTotalCommits(a),
   );
 }
 
@@ -143,9 +144,7 @@ function splitTopContributors(contributors, topN = 6) {
 }
 
 function buildOtherDataset(contributors, labels) {
-  const monthlyCommits = Object.fromEntries(
-    labels.map((label) => [label, 0])
-  );
+  const monthlyCommits = Object.fromEntries(labels.map((label) => [label, 0]));
 
   for (const contributor of contributors) {
     for (const week of contributor.weeks) {
@@ -168,11 +167,11 @@ function buildOtherDataset(contributors, labels) {
 function getVisibleDatasets(allContributors, labels) {
   const { topContributors, otherContributors } = splitTopContributors(
     allContributors,
-    TOP_N
+    TOP_N,
   );
 
   const topContributorNames = new Set(
-    topContributors.map((c) => c.author?.login || "Unknown")
+    topContributors.map((c) => c.author?.login || "Unknown"),
   );
 
   const manuallySelected = allContributors.filter((c) => {
@@ -254,20 +253,16 @@ function renderContributorChart() {
 }
 
 function renderLanguagesChart(languages) {
-    const insights = JSON.parse(localStorage.getItem("insights"));
-    const container = document.getElementById("language-pie");
-
-    
-
+  const insights = JSON.parse(localStorage.getItem("insights"));
+  const container = document.getElementById("language-pie");
 
     if (!container || !insights) return;
 
-    const { labels, data} = buildLanguageData(insights.languages);
+  const { labels, data } = buildLanguageData(insights.languages);
 
-    if (languageChart) {
-        languageChart.destroy();
-    }
-
+  if (languageChart) {
+    languageChart.destroy();
+  }
 
     languageChart = new Chart(container, {
         type: 'pie',
@@ -296,19 +291,17 @@ function renderLanguagesChart(languages) {
 }
 
 function renderPRDonutChart(pull) {
-    const insights = JSON.parse(localStorage.getItem("insights"));
-    const container = document.getElementById("pr-donut");
+  const insights = JSON.parse(localStorage.getItem("insights"));
+  const container = document.getElementById("pr-donut");
 
     if (!container || !insights) return;
 
-    const counts = buildPRStatusCounts(insights.pullRequestStats);
-    const { labels, data} = buildDonutData(counts);
+  const counts = buildPRStatusCounts(insights.pullRequestStats);
+  const { labels, data } = buildDonutData(counts);
 
-    if (donutChart) {
-        donutChart.destroy();
-    }
-
-
+  if (donutChart) {
+    donutChart.destroy();
+  }
 
     donutChart = new Chart(container, {
         type: 'doughnut',
@@ -371,7 +364,7 @@ function renderContributorSelector(allContributors) {
           <input type="checkbox" data-name="${name}" ${checked ? "checked" : ""}>
           ${name} (${total})
         </label>
-        `
+        `,
       );
     });
   }
@@ -427,15 +420,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderContributorChart();
   renderLanguagesChart();
   renderPRDonutChart();
-
 });
-
-
-
-
-
-
-
 
 // async function renderContributorChart() {
 //   const [repoDetails, contributors] = await Promise.all([
