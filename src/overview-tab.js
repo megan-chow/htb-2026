@@ -1,9 +1,6 @@
 // import "./analytics.js";
 
 // Store GitHub Repo Insights
-const insights = JSON.parse(localStorage.getItem("insights"));
-// const insights = localStorage.getItem("insights");
-const commitDetails = insights.commitDetails;
 
 export async function loadOverviewTab() {
   console.log("loading overview");
@@ -31,20 +28,23 @@ async function getUserName() {
 
 async function getTotalCommits() {
   let name = localStorage.username;
-  // const insights = JSON.parse(localStorage.getItem("insights"));
+  const insights = JSON.parse(localStorage.getItem("insights") || "{}");
   const commitDetails = insights.commitDetails;
 
-  if (commitDetails[name] && Array.isArray(commitDetails[name])) {
+  if (commitDetails?.[name] && Array.isArray(commitDetails[name])) {
     return commitDetails[name].length;
   }
 }
 
 async function getLastCommit() {
-  return commitDetails[0];
+  const insights = JSON.parse(localStorage.getItem("insights") || "{}");
+  const commitDetails = insights.commitDetails;
+  return commitDetails?.[0];
 }
 
 async function getOpenPRs() {
   let count = 0;
+  const insights = JSON.parse(localStorage.getItem("insights") || "{}");
   const prs = insights.pullRequestStats;
 
   for (let i = 0; i < insights.pullRequestStats.length; i++) {
