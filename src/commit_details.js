@@ -16,7 +16,7 @@ document.querySelector(".userTabslist").addEventListener("click", e => {
   renderCommitDetails(username);
 });
 
-function renderCommitDetails(username) {
+export function renderCommitDetails(username) {
   const insights = JSON.parse(localStorage.getItem("insights") || "{}");
   const commits = insights.commitDetails?.[username] || [];
   const output = document.getElementById("stats");

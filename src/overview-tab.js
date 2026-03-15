@@ -5,7 +5,7 @@ const insights = JSON.parse(localStorage.getItem("insights"));
 // const insights = localStorage.getItem("insights");
 const commitDetails = insights.commitDetails;
 
-async function loadOverviewTab() {
+export async function loadOverviewTab() {
   const container = document.getElementById("stats");
   if (!container) return;
 
