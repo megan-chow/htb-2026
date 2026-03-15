@@ -401,8 +401,8 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   // console.log("Clicked contributor:", username);
 
   // Do stuff
-  document.getElementById("contributorResultsHeading").textContent =
-    "Analytics for contributer " + username;
+  // document.getElementById("contributorResultsHeading").textContent =
+  //   "Analytics for contributer " + username;
   localStorage.setItem("username", username);
 });
 
