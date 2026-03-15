@@ -74,7 +74,7 @@ function buildDatasets(contributors, labels) {
       labels.map((label) => [label, 0]),
     );
 
-    for (const week of contributor.weeks) {
+    for (const week of contributor.weeks || []) {
       const label = monthLabelFromUnix(week.w);
 
       if (monthlyCommits[label] !== undefined) {
@@ -147,7 +147,7 @@ function buildOtherDataset(contributors, labels) {
   const monthlyCommits = Object.fromEntries(labels.map((label) => [label, 0]));
 
   for (const contributor of contributors) {
-    for (const week of contributor.weeks) {
+    for (const week of contributor.weeks || []) {
       const label = monthLabelFromUnix(week.w);
 
       if (monthlyCommits[label] !== undefined) {

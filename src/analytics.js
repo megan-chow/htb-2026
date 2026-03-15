@@ -503,11 +503,12 @@ function renderContent() {
 // Tab listeners
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => selectTab(tab.textContent));
-  const repoOverviewBtn = document.getElementById("repoOverviewBtn");
-  if (repoOverviewBtn) {
-    repoOverviewBtn.addEventListener("click", selectRepoOverview);
-  }
 });
+
+const repoOverviewBtn = document.getElementById("repoOverviewBtn");
+if (repoOverviewBtn) {
+  repoOverviewBtn.addEventListener("click", selectRepoOverview);
+}
 
 function setContributorTabsVisible(isVisible) {
   const tabs = document.getElementById("tabs");
