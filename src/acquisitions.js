@@ -10,6 +10,7 @@ import Chart from 'chart.js/auto';
 
 let contributorChart = null;
 let languageChart = null;
+let donutChart = null;
 let selectedContributors = new Set();
 let showOther = true;
 const TOP_N = 4;
@@ -94,6 +95,34 @@ function buildLanguageData(languages) {
 
     return { labels, data};
 }
+
+function buildPRStatusCounts(pullRequests) {
+  const counts = {
+    Approved: 0,
+    Denied: 0,
+    Pending: 0,
+  };
+
+  for (const pr of pullRequests) {
+    if (pr.merged) {
+      counts.Approved++;
+    } else if (pr.state === "open") {
+      counts.Pending++;
+    } else if (pr.state === "closed") {
+      counts.Denied++;
+    }
+  }
+
+  return counts;
+}
+
+function buildDonutData(counts) {
+  return {
+    labels: Object.keys(counts),
+    data: Object.values(counts),
+  };
+}
+
 
 function getTotalCommits(contributor) {
   return contributor.weeks.reduce((sum, week) => sum + week.c, 0);
@@ -267,6 +296,52 @@ function renderLanguagesChart(languages) {
     });
 }
 
+function renderPRDonutChart(pull) {
+    const insights = JSON.parse(localStorage.getItem("insights"));
+    const container = document.getElementById("pr-donut");
+
+    if (!container) return;
+
+    const counts = buildPRStatusCounts(insights.pullRequestStats);
+    const { labels, data} = buildDonutData(counts);
+
+    if (donutChart) {
+        donutChart.destroy();
+    }
+
+
+
+    donutChart = new Chart(container, {
+        type: 'doughnut',
+        data: {
+            labels,
+            datasets: [{
+
+                label:'PR Status',
+                data,
+                hoverOffset: 4,
+
+
+            }],
+        
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `PR Status: ${owner}/${repo}`,
+                },
+            },
+            legend: {
+                display: true,
+                position: 'right',
+            },
+        }
+    });
+
+}
+
 function renderContributorSelector(allContributors) {
   const container = document.getElementById("contributorSelector");
   const searchInput = document.getElementById("contributorSearch");
@@ -345,12 +420,15 @@ window.addEventListener("insightsReady", () => {
   initializeContributorUI();
   renderContributorChart();
   renderLanguagesChart();
+  renderPRDonutChart();
 });
 
 window.addEventListener("DOMContentLoaded", () => {
   initializeContributorUI();
   renderContributorChart();
   renderLanguagesChart();
+  renderPRDonutChart();
+
 });
 
 
