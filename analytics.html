@@ -1,99 +1,103 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./src/style.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiko:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>GitHub Insights</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="./src/style.css" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link href="https://fonts.googleapis.com/css2?family=Amiko:wght@400;600;700&display=swap" rel="stylesheet">
-  <title>GitHub Insights</title>
-</head>
-
-<body class="page">
-  <div id="loading-overlay">
-    <div id="wrap"></div>
-    <h1 class="info">Loading...</h1>
-  </div>
-
-  <header class="header">
-    <div id="logo">
-      <a href="index.html">
-        <img src="public/mahv.png" style="height:120px; width:220px; filter:opacity(80%);"><img />
-      </a>
+  <body class="page">
+    <div id="loading-overlay">
+      <div id="wrap"></div>
+      <h1 class="info">Loading...</h1>
     </div>
-    <div id="searchbar">
-      <img src="./gitico.png" />
-      <div id="search">
-        <input id="repoInput" placeholder="Enter GitHub repository URL" value="https://github.com/sdv-dev/SDGym" />
-        <button id="generateBtn">%</button>
-        <pre id="output" style="display: none"></pre>
+
+    <header class="header">
+      <div id="logo">
+        <a href="index.html">
+          <img
+            src="public/mahv.png"
+            style="height: 120px; width: 220px; filter: opacity(80%)"
+          /><img />
+        </a>
       </div>
-    </div>
-  </header>
+      <div id="searchbar">
+        <img src="./gitico.png" />
+        <div id="search">
+          <input
+            id="repoInput"
+            placeholder="Enter GitHub repository URL"
+            value="https://github.com/sdv-dev/SDGym"
+          />
+          <button id="generateBtn">%</button>
+          <pre id="output" style="display: none"></pre>
+        </div>
+      </div>
+    </header>
 
-  <main id="main">
+    <main id="main">
       <div id="userBoard">
-        <div class="userTabslist">
-          Loading...
-        </div>
+        <div class="userTabslist">Loading...</div>
       </div>
-    <div id="statsPage">
-      <div class="split">
-        <div id="contributorResultsHeading">
-          <p>Select a contributor</p>
-        </div>
-        <div id="tabs">
-          <div class="tab">CHUD</div>
-          <div class="tab">CHUD</div>
-          <div class="tab">CHUD</div>
-          <div class="tab">CHUD</div>
-          <div class="tab">CHUD</div>
-        </div>
-      </div>
-
-      <div id="stats">
-        ACTUAL STATS
-        <div style="width: 500px">
-          <canvas id="acquisitions"></canvas>
-
-          <input type="text" id="contributorSearch" placeholder="Search contributors" />
-          <div id="contributorSelector"></div>
-
-          <label>
-            <input type="checkbox" id="toggleOther" checked />
-            Show Other
-          </label>
-
+      <div id="statsPage">
+        <div class="split">
+          <div id="contributorResultsHeading">
+            <p>Select a contributor</p>
+          </div>
+          <div id="tabs">
+            <div class="tab">CHUD</div>
+            <div class="tab">CHUD</div>
+            <div class="tab">CHUD</div>
+            <div class="tab">CHUD</div>
+            <div class="tab">CHUD</div>
+          </div>
         </div>
 
-        <div id="test"></div>
-        <div style="width: 500px">
+        <div id="stats">
+          ACTUAL STATS
+          <div style="width: 500px">
+            <canvas id="acquisitions"></canvas>
 
-          <canvas id="language-pie"></canvas>
+            <input
+              type="text"
+              id="contributorSearch"
+              placeholder="Search contributors"
+            />
+            <div id="contributorSelector"></div>
+
+            <label>
+              <input type="checkbox" id="toggleOther" checked />
+              Show Other
+            </label>
+          </div>
 
           <div id="test"></div>
-        </div>
+          <div style="width: 500px">
+            <canvas id="language-pie"></canvas>
 
+            <div id="test"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <!-- <div id="tempButtons">
+      <div id="tempButtons">
         <input
           id="overviewButton"
           type="button"
           value="Overview"
           onclick="loadOverviewTab()"
-        /> -->
-    </div>
-  </main>
+        />
+      </div>
+    </main>
 
-  <!-- <pre id="output" style="display: none"></pre> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
-  <script type="module" src="/src/analytics.js"></script>
-  <script type="module" src="/src/acquisitions.js"></script>
-  <script type="module" src="/src/overview-tab.js"></script>
-</body>
-</div>
-</main>
-</body>
-
+    <pre id="output" style="display: none"></pre>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
+    <script type="module" src="/src/analytics.js"></script>
+    <script type="module" src="/src/acquisitions.js"></script>
+    <script type="module" src="/src/overview-tab.js"></script>
+  </body>
 </html>
