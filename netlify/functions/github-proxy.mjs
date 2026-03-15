@@ -16,6 +16,7 @@ export default async (req) => {
   };
 
   const token = process.env.GITHUB_TOKEN;
+  console.log(token);
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
