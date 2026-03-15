@@ -1,4 +1,7 @@
 import "./style.css";
+import { loadOverviewTab } from "./overview-tab.js";
+import { renderCommitDetails } from "./commit_details.js";
+
 import { Octokit } from "https://esm.sh/octokit?bundle";
 
 const octokit = new Octokit({
@@ -376,7 +379,60 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
   // Do stuff
   document.getElementById("contributorResultsHeading").textContent =
     "Analytics for contributer " + username;
+  // localStorage.setItem("username", username);
+  selectUser(username);
+});
+
+
+// *******
+// Tabs
+// *******
+// Save state when user or tab is clicked
+
+// ADAM LOOK HERE
+function selectUser(username) {
   localStorage.setItem("username", username);
+  renderContent();
+}
+
+// LOOK HERE TOO
+function selectTab(tab) {
+  localStorage.setItem("tab", tab);
+  renderContent();
+}
+
+// Render content based on current state
+function renderContent() {
+  const activeUser = localStorage.getItem("username");
+  const activeTab = localStorage.getItem("tab");
+
+  if (!activeUser || !activeTab) return;
+
+  // const contributor = contributors.find(c => c.username === activeUser);
+
+  switch (activeTab) {
+    case "Overview":
+      loadOverviewTab();
+      // loadOverview(contributor);
+      break;
+    case "Commits":
+      renderCommitDetails(activeUser);
+      break;
+    case "Pull Requests":
+      // loadPullRequests(contributor);
+      break;
+    case "Charts":
+      // loadCharts(contributor);
+      break;
+    default:
+      // loadOverview(contributor);
+      break;
+  }
+}
+
+// Tab listeners
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => selectTab(tab.textContent));
 });
 
 
