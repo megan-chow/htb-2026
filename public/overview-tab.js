@@ -1,11 +1,12 @@
-import "./analytics.js";
+// import "./analytics.js";
 
 // Store GitHub Repo Insights
 const insights = JSON.parse(localStorage.getItem("insights"));
 // const insights = localStorage.getItem("insights");
 const commitDetails = insights.commitDetails;
 
-async function loadOverviewTab() {
+export async function loadOverviewTab() {
+  console.log("loading overview");
   const container = document.getElementById("stats");
   if (!container) return;
 

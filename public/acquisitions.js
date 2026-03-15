@@ -302,7 +302,10 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+export function renderCharts() {
+  initializeContributorUI();
+  renderContributorChart();
+}
 
 
 
