@@ -124,6 +124,7 @@ body {
   background: var(--prim);
   display: grid;
   overflow-y: auto;
+  overflow-x: none;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 2px;
@@ -307,7 +308,7 @@ body {
 }
 
 .tab{
-  background-color: var(--bg);
+  background-color: var(--dot-bg);
   padding-top: 15px;
   padding-bottom: 30px;
 
@@ -336,4 +337,8 @@ body {
   background-color: #151515 ;
   color: white;
   border: var(--prim) solid 0px;
+}
+
+#stats::-webkit-scrollbar {
+  display: none;
 }
