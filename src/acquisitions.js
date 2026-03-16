@@ -408,13 +408,16 @@ function initializeContributorUI() {
 export function displayGraphs() {
   const insights = JSON.parse(localStorage.getItem("insights"));
   if (!insights) return;
-  if (!insights.contributorStats || !Array.isArray(insights.contributorStats)) {
-    // TODO: display generating graphs
-    return;
-  }
 
   const statsDiv = document.getElementById("stats");
   if (!statsDiv) return;
+
+  if (!Array.isArray(insights.contributorStats) || insights.contributorStats.length == 0) {
+    statsDiv.innerHTML = `
+      <p>Generating repository overview...</p>
+    `;
+    return;
+  }
 
   statsDiv.innerHTML = `
     <div class="repo-graphs-layout">
