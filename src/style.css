@@ -324,7 +324,17 @@ body {
   font-family: "Amiko";
 }
 
-#tabs {
+/* #tabs {
+  display: grid;
+  text-align: center;
+  gap: 1px;
+} */
+
+#tab-repo {
+  padding-left: 25px;
+}
+
+#user-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
@@ -346,8 +356,8 @@ body {
 }
 
 .split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: grid;  
+  grid-template-columns: 1fr 1.5fr;
   margin-bottom: 30px;
 }
 
@@ -843,13 +853,7 @@ body {
   height: 60px;
 }
 
-.repo-overview-btn.active {
-  background-color: #25292f;
-}
 
-.repo-overview-btn:hover {
-  background-color: #373d46;
-}
 
 .repo-graphs-layout {
   display: grid;

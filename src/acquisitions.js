@@ -1,12 +1,4 @@
-// import { Octokit } from "https://esm.sh/octokit?bundle";
-
 import Chart from "chart.js/auto";
-
-// import {getContributorStats, getRepoDetails} from "./analytics.js";
-
-// const octokit = new Octokit({
-//   auth: import.meta.env.VITE_GITHUB_TOKEN, // or use environment variables in Node
-// });
 
 let contributorChart = null;
 let languageChart = null;
@@ -416,6 +408,10 @@ function initializeContributorUI() {
 export function displayGraphs() {
   const insights = JSON.parse(localStorage.getItem("insights"));
   if (!insights) return;
+  if (!insights.contributorStats || !Array.isArray(insights.contributorStats)) {
+    // TODO: display generating graphs
+    return;
+  }
 
   const statsDiv = document.getElementById("stats");
   if (!statsDiv) return;
@@ -455,55 +451,6 @@ export function displayGraphs() {
 }
 
 window.addEventListener("insightsReady", () => {
-  initializeContributorUI();
-  renderContributorChart();
-  renderLanguagesChart();
-  renderPRDonutChart();
+  console.log("insights ready listener");
+  if(localStorage.getItem("tab") === "tab-repo") displayGraphs();
 });
-
-window.addEventListener("DOMContentLoaded", () => {
-  initializeContributorUI();
-  renderContributorChart();
-  renderLanguagesChart();
-  renderPRDonutChart();
-});
-
-// async function renderContributorChart() {
-//   const [repoDetails, contributors] = await Promise.all([
-//     getRepoDetails(owner, repo),
-//     getContributorStats(owner, repo),
-//   ]);
-
-//   const labels = getMonthLabelsForRepo(repoDetails.created_at);
-//   const datasets = buildDatasets(contributors, labels);
-
-//   const ctx = document.getElementById("acquisitions");
-
-//   contributorChart = new Chart(ctx, {
-//     type: "line",
-//     data: {
-//       labels,
-//       datasets,
-//     },
-//     options: {
-//       responsive: true,
-//       interaction: {
-//         mode: "index",
-//         intersect: false,
-//       },
-//       plugins: {
-//         title: {
-//           display: true,
-//           text: "Commits by Contributor per Month",
-//         },
-//       },
-//       scales: {
-//         y: {
-//           beginAtZero: true,
-//         },
-//       },
-//     },
-//   });
-// }
-
-// renderContributorChart().catch(console.error);

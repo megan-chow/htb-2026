@@ -23,17 +23,20 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("repoInput").value =
         `https://github.com/${owner}/${repo}`;
 
-      const insights = await generateInsights(owner, repo);
-      console.log("print");
-      // output.textContent = JSON.stringify(insights, null, 2);
-      localStorage.setItem("insights", JSON.stringify(insights));
       localStorage.setItem("owner", owner);
       localStorage.setItem("repo", repo);
 
-      // default screen = repo-wide overview
-      localStorage.removeItem("tab");
+      localStorage.setItem("tab", "tab-repo"); // default screen = repo-wide overview
+      localStorage.removeItem("username");
       setContributorTabsVisible(false);
-      displayGraphs();
+
+      await generateInsights(owner, repo);
+      hideLoader();
+      renderContributors();
+      renderContent();
+      console.log("print");
+      // output.textContent = JSON.stringify(insights, null, 2);
+      
     } catch (err) {
       output.textContent = "Error: " + err.message;
     }
@@ -54,21 +57,6 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
   }
 });
 
-// document.getElementById("generateBtn").addEventListener("click", async () => {
-//   const url = document.getElementById("repoInput").value.trim();
-//   const output = document.getElementById("output");
-
-//   try {
-//     const { owner, repo } = parseRepoUrl(url);
-
-//     const insights = await generateInsights(owner, repo);
-
-//     output.textContent = JSON.stringify(insights, null, 2);
-//   } catch (err) {
-//     output.textContent = "Error: " + err.message;
-//   }
-// });
-
 function parseRepoUrl(url) {
   const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)(\/|$)/);
 
@@ -82,7 +70,6 @@ function parseRepoUrl(url) {
 async function generateInsights(owner, repo) {
   const [
     contributors,
-    contributorStats,
     repoDetails,
     languages,
     commits,
@@ -92,7 +79,6 @@ async function generateInsights(owner, repo) {
     authors,
   ] = await Promise.all([
     getContributors(owner, repo),
-    getContributorStats(owner, repo),
     getRepoDetails(owner, repo),
     getLanguages(owner, repo),
     getCommitActivity(owner, repo),
@@ -102,11 +88,9 @@ async function generateInsights(owner, repo) {
     getAuthors(owner, repo),
   ]);
 
-  renderContributors(contributors);
-
-  return {
+  const insights = {
     contributors: contributors,
-    contributorStats: contributorStats,
+    contributorStats: [],
     repoDetails: repoDetails,
     languages: languages,
     commitFrequency: commits,
@@ -115,6 +99,14 @@ async function generateInsights(owner, repo) {
     issueStats: issues,
     authors: authors,
   };
+
+  localStorage.setItem("insights", JSON.stringify(insights));
+
+  getContributorStats(owner, repo).then(stats => {
+    insights.contributorStats = stats;
+    localStorage.setItem("insights", JSON.stringify(insights));
+    window.dispatchEvent(new Event("insightsReady"));  // trigger chart render
+  });
 }
 
 async function getContributors(owner, repo) {
@@ -144,12 +136,19 @@ async function getCommitActivity(owner, repo) {
 }
 
 async function getContributorStats(owner, repo) {
-  const res = await octokit.request(
-    "GET /repos/{owner}/{repo}/stats/contributors",
-    { owner, repo },
-  );
+  while (true) {
+    const res = await octokit.request(
+      "GET /repos/{owner}/{repo}/stats/contributors",
+      { owner, repo },
+    );
 
-  return res.data;
+    if (Array.isArray(res.data) && res.data.length > 0) {
+      return res.data;
+    }
+
+    // 202 - GitHub is computing, wait and retry
+    await new Promise(resolve => setTimeout(resolve, 3000));
+  }
 }
 
 async function getRepoDetails(owner, repo) {
@@ -194,33 +193,6 @@ async function getCommitDetails(owner, repo, sha) {
 }
 
 async function getContributorChanges(owner, repo) {
-  // console.log("AAAAAAA");
-  // const commits = await getRecentCommits(owner, repo);
-
-  // const contributors = {};
-
-  // for (const commit of commits) {
-  //   const sha = commit.sha;
-  //   const author = commit.author?.login || "Unknown";
-
-  //   const details = await getCommitDetails(owner, repo, sha);
-
-  //   if (!contributors[author]) {
-  //     contributors[author] = [];
-  //   }
-
-  //   for (const file of details.files) {
-  //     contributors[author].push({
-  //       sha,
-  //       filename: file.filename,
-  //       additions: file.additions,
-  //       deletions: file.deletions,
-  //       patch: file.patch,
-  //     });
-  //   }
-  // }
-
-  // return contributors;
 
   const commits = await getRecentCommits(owner, repo, 25);
   // console.log("BBBBBBBB");
@@ -380,7 +352,10 @@ async function getComments(owner, repo, pull_number) {
   return res.data;
 }
 
-function renderContributors(contributors) {
+function renderContributors() {
+  let insights = JSON.parse(localStorage.getItem("insights"));
+  let contributors = insights.contributors;
+  console.log(contributors);
   let user_list = document.querySelector(".userTabslist");
 
   user_list.innerHTML = "";
@@ -395,7 +370,6 @@ function renderContributors(contributors) {
     `,
     );
   });
-  hideLoader();
 }
 
 // Listener for contributor selector
@@ -405,11 +379,6 @@ document.querySelector(".userTabslist").addEventListener("click", (e) => {
 
   const username = contributor.querySelector(".contributor-name").textContent;
   // console.log("Clicked contributor:", username);
-
-  // Do stuff
-  // document.getElementById("contributorResultsHeading").textContent =
-  //   "Analytics for contributer " + username;
-  // localStorage.setItem("username", username);
   selectUser(username);
 });
 
@@ -423,95 +392,63 @@ function selectUser(username) {
   localStorage.setItem("username", username);
 
   // default contributor tab
-  localStorage.setItem("tab", "Overview");
+  localStorage.setItem("tab", "tab-overview");
 
-  setRepoOverviewActive(false);
   setContributorTabsVisible(true);
   renderContent();
 }
 
 function selectTab(tab) {
-  document
-    .querySelectorAll(".tab")
-    .forEach((t) => t.classList.remove("active"));
+  localStorage.setItem("tab", tab);
+  renderContent();
+}
 
-  const tabEl = document.getElementById(`tab-${tab}`);
+function renderContent() {
+  const user = localStorage.getItem("username");
+  let tab = localStorage.getItem("tab") || "tab-repo";
+  localStorage.setItem("tab", tab);
+
+  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+
+  const tabEl = document.getElementById(tab);
+  console.log("render content tab: " + tab);
   if (tabEl) {
     tabEl.classList.add("active");
   }
 
-  localStorage.setItem("tab", tab);
-  setRepoOverviewActive(false);
-  renderContent();
-}
+  // console.log("active tab: " + tab);
 
-function selectRepoOverview() {
-  localStorage.removeItem("tab");
-  document
-    .querySelectorAll(".tab")
-    .forEach((t) => t.classList.remove("active"));
-  setRepoOverviewActive(true);
-  setContributorTabsVisible(false);
-  displayGraphs();
-}
-
-function setRepoOverviewActive(isActive) {
-  const btn = document.getElementById("repoOverviewBtn");
-  if (!btn) return;
-  btn.classList.toggle("active", isActive);
-}
-
-function renderContent() {
-  const activeUser = localStorage.getItem("username");
-  const activeTab = localStorage.getItem("tab");
-
-  // repo overview mode
-  if (!activeTab) {
-    setRepoOverviewActive(true);
-    setContributorTabsVisible(false);
-    displayGraphs();
-    return;
-  }
-
-  // contributor tab selected but somehow no contributor chosen
-  if (!activeUser) {
-    setContributorTabsVisible(false);
-    document.getElementById("stats").innerHTML =
-      "<p>Please select a contributor.</p>";
-    return;
-  }
-
-  setRepoOverviewActive(false);
-  setContributorTabsVisible(true);
-
-  switch (activeTab) {
-    case "Overview":
+  switch (tab) {
+    case "tab-repo":
+      setContributorTabsVisible(false);
+      displayGraphs();
+      break;
+    case "tab-overview":
+      setContributorTabsVisible(true);
       loadOverviewTab();
       break;
-    case "Commits":
-      renderCommitDetails(activeUser);
+    case "tab-commits":
+      setContributorTabsVisible(true);
+      renderCommitDetails(user);
       break;
-    case "Pull Requests":
+    case "tab-pr":
+      setContributorTabsVisible(true);
       initPRList();
       break;
     default:
-      loadOverviewTab();
+      setContributorTabsVisible(false);
+      displayGraphs();
       break;
   }
 }
 
 // Tab listeners
 document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => selectTab(tab.textContent));
+  tab.addEventListener("click", () => selectTab(tab.id));
 });
 
-const repoOverviewBtn = document.getElementById("repoOverviewBtn");
-if (repoOverviewBtn) {
-  repoOverviewBtn.addEventListener("click", selectRepoOverview);
-}
-
 function setContributorTabsVisible(isVisible) {
-  const tabs = document.getElementById("tabs");
+  const tabs = document.getElementById("user-tabs");
   if (!tabs) return;
 
   tabs.style.display = isVisible ? "grid" : "none";
