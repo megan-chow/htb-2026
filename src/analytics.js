@@ -194,7 +194,7 @@ async function getCommitDetails(owner, repo, sha) {
 
 async function getContributorChanges(owner, repo) {
 
-  const commits = await getRecentCommits(owner, repo, 25);
+  const commits = await getRecentCommits(owner, repo, 50);
   // console.log("BBBBBBBB");
   const contributors = {};
 
