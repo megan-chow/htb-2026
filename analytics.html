@@ -49,52 +49,22 @@
       </div>
       <div id="statsPage">
         <div class="split">
-          <div id="contributorResultsHeading">
-            <button id="repoOverviewBtn" class="repo-overview-btn active">
-              Repo Overview
-            </button>
+          <div id="repo-tab">
+            <div class="tab" id="tab-repo">Repo Overview</div>
           </div>
-          <div id="tabs">
-            <div class="tab" id="tab-Overview">User Overview</div>
-            <div class="tab" id="tab-Commits">Commits</div>
-            <div class="tab" id="tab-Pull Requests">Pull Requests</div>
+          <div id="user-tabs">
+            <div class="tab" id="tab-overview">User Overview</div>
+            <div class="tab" id="tab-commits">Commits</div>
+            <div class="tab" id="tab-pr">Pull Requests</div>
             <!-- <div class="tab">CHUD</div> -->
           </div>
         </div>
 
-        <div id="stats">
-          ACTUAL STATS
-          <div style="width: 500px">
-            <canvas id="acquisitions"></canvas>
-
-            <input
-              type="text"
-              id="contributorSearch"
-              placeholder="Search contributors"
-            />
-            <div id="contributorSelector"></div>
-
-            <label>
-              <input type="checkbox" id="toggleOther" checked />
-              Show Other
-            </label>
-          </div>
-
-          <div id="test"></div>
-          <div style="width: 500px">
-            <canvas id="language-pie"></canvas>
-          </div>
-          <div style="width: 500px">
-            <canvas id="pr-donut"></canvas>
-          </div>
-        </div>
+        <div id="stats"></div>
       </div>
     </main>
 
-    <!-- <pre id="output" style="display: none"></pre> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
     <script type="module" src="/src/analytics.js"></script>
-    <!-- <script type="module" src="/src/acquisitions.js"></script> -->
-    <!-- <script type="module" src="/src/overview-tab.js"></script> -->
   </body>
 </html>
